@@ -1,19 +1,27 @@
 """Offline desktop workspace. Import runs in a worker; SQL aggregates in DuckDB."""
 import csv,json
 from pathlib import Path
-from PySide6.QtCore import Qt,QThread,Signal
+from PySide6.QtCore import Qt,QThread,Signal,QEventLoop
 from PySide6.QtGui import QColor,QPainter,QFont
-from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QComboBox,QDoubleSpinBox,QSpinBox,QCheckBox,QTableWidget,QTableWidgetItem,QHeaderView,QFileDialog,QMessageBox,QPlainTextEdit,QLineEdit,QFormLayout,QSplitter,QScrollArea)
+from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QComboBox,QDoubleSpinBox,QSpinBox,QCheckBox,QTableWidget,QTableWidgetItem,QHeaderView,QFileDialog,QMessageBox,QPlainTextEdit,QLineEdit,QFormLayout,QSplitter,QScrollArea,QProgressDialog)
 from .store import Store
+from .sequence_ui import SequencePanel
+from .replayer import Replayer
+from .profiles import PROFILES
+from .study_ui import StudyDashboard,SettingsPanel
 from .research import explore,player_profiles,classify,leaks,save_strategy,import_reference,terminal_bet_ev,validate_baseline,selection,FROM
 
 DARK='''
-QWidget {background:#10151e;color:#dfe6f2;font-family:Segoe UI;font-size:14px;}
-QMainWindow {background:#10151e;}
+QToolTip {background:#223249;color:#e8f0fc;border:1px solid #3b526a;padding:6px;}
+QGroupBox {border:1px solid #2b3b4e;border-radius:7px;margin-top:10px;padding:8px;}
+QProgressBar {border:0;background:#1b2a3b;border-radius:4px;max-height:8px;} QProgressBar::chunk {background:#52c8de;}
+QTreeWidget {background:#151f2d;border:1px solid #2b3b4e;border-radius:6px;} QTreeWidget::item {padding:9px;}
+QWidget {background:#111720;color:#dfe6f2;font-family:Segoe UI;font-size:14px;}
+QMainWindow {background:#111720;}
 QLabel#title {font-size:28px;font-weight:700;} QLabel#muted {color:#8d9bb0;}
 QLabel#metric {background:#192231;border-radius:8px;padding:16px;font-size:20px;}
-QListWidget {background:#141c28;border:0;padding:12px;min-width:200px;} QListWidget::item {padding:17px 10px;border-radius:6px;} QListWidget::item:selected {background:#243a48;color:#68e0bd;}
-QPushButton {background:#24473f;color:#8cf2cd;border:1px solid #3b6c5c;border-radius:5px;padding:9px 15px;} QPushButton:hover {background:#315e51;} QPushButton:disabled {color:#657181;}
+QListWidget {background:#141c28;border:0;padding:12px;min-width:200px;} QListWidget::item {padding:17px 10px;border-radius:6px;} QListWidget::item:selected {background:#243a48;color:#84dce9;}
+QPushButton {background:#193d50;color:#98e5f2;border:1px solid #306078;border-radius:5px;padding:9px 15px;} QPushButton:hover {background:#24546b;} QPushButton:disabled {color:#657181;}
 QComboBox,QDoubleSpinBox,QLineEdit,QPlainTextEdit {background:#192231;border:1px solid #334054;border-radius:4px;padding:6px;}
 QTableWidget {background:#151d29;alternate-background-color:#192330;gridline-color:#273348;border:1px solid #273348;selection-background-color:#315448;}
 QHeaderView::section {background:#202d3f;color:#9eadc3;padding:8px;border:0;} QScrollArea {border:0;} QSplitter::handle {background:#263346;}
@@ -45,7 +53,7 @@ class Bars(QWidget):
         width=max(10,self.width()-310)
         for i,r in enumerate(self.rows):
             y=12+i*step;p.setPen(QColor('#bdcbe0'));p.drawText(10,y+19,r['result'])
-            p.fillRect(160,y,int(width*r['frequency']),23,QColor('#53cba6'))
+            p.fillRect(160,y,int(width*r['frequency']),23,QColor('#52c8de'))
             p.setPen(QColor('#e1ecff'));p.drawLine(160+int(width*r['ci_low']),y+12,160+int(width*r['ci_high']),y+12)
             p.drawText(170+width,y+19,f"{r['frequency']:.1%} · n={r['cases']}")
         p.end()
@@ -59,11 +67,12 @@ class ImportWorker(QThread):
         try:
             s=Store(self.path);totals={}
             for i,path in enumerate(self.files):
+                if self.isInterruptionRequested():break
                 r=s.import_file(path)
                 for k,v in r.items():
                     if isinstance(v,int):totals[k]=totals.get(k,0)+v
                 self.progress.emit(f'{i+1}/{len(self.files)} archivos · {totals.get("added",0):,} manos nuevas')
-            self.done.emit(json.dumps(totals,ensure_ascii=False,indent=2))
+            self.done.emit('\n'.join(f'{k}: {v}' for k,v in totals.items())+('\nCancelado después del último archivo completo.' if self.isInterruptionRequested() else '\nImportación finalizada.'))
         except Exception as e:self.failed.emit(str(e))
         finally:
             if s:s.close()
@@ -78,6 +87,9 @@ class Window(QMainWindow):
         sl.addWidget(QLabel('iPoker / ChampionPoker\nEstudio offline · Datos locales'));side.setMaximumWidth(265);layout.addWidget(side)
         self.stack=QStackedWidget();layout.addWidget(self.stack,1)
         self.build_explorer();self.build_import();self.build_players();self.build_leaks();self.build_strategies();self.build_references()
+        self.sequence_panel=SequencePanel(self.store,self);self.stack.addWidget(self.sequence_panel);self.nav.addItem('Explorador de secuencias')
+        self.dashboard=StudyDashboard(self);self.stack.insertWidget(0,self.dashboard);self.nav.insertItem(0,'Panel de estudio')
+        self.settings=SettingsPanel(self);self.stack.addWidget(self.settings);self.nav.addItem('Datos y configuración')
         self.nav.currentRowChanged.connect(self.stack.setCurrentIndex);self.nav.setCurrentRow(0)
         self.refresh_all();self.setStyleSheet(DARK)
 
@@ -101,7 +113,7 @@ class Window(QMainWindow):
         for i,(key,title) in enumerate([('spot','Spot'),('population','Actor'),('opponent_population','Rival directo'),('format','Modalidad HU/3H'),('stake','Buy-in total'),('street','Calle'),('position','Posición'),('texture','Textura'),('previous','Acción anterior')]):
             combo=QComboBox();combo.setMinimumWidth(130);self.filters[key]=combo
             grid.addWidget(QLabel(title),2*(i//5),i%5);grid.addWidget(combo,2*(i//5)+1,i%5)
-        box.addLayout(grid)
+        box.addLayout(grid);self.filters['format'].currentTextChanged.connect(self.explorer_positions)
         rangebox=QHBoxLayout();self.lo=QDoubleSpinBox();self.hi=QDoubleSpinBox()
         for spin,val in [(self.lo,0),(self.hi,100)]:spin.setRange(0,1000);spin.setValue(val)
         rangebox.addWidget(QLabel('Stack efectivo (BB)'));rangebox.addWidget(self.lo);rangebox.addWidget(self.hi)
@@ -109,10 +121,14 @@ class Window(QMainWindow):
         for spin,val in [(self.size_lo,0),(self.size_hi,1000)]:spin.setRange(0,10000);spin.setValue(val);rangebox.addWidget(spin)
         self.size_mode=QComboBox();self.size_mode.addItems(['Todos los tamaños','Filtrar apuesta previa']);rangebox.addWidget(self.size_mode)
         self.button(rangebox,'Investigar',self.refresh_explorer);self.button(rangebox,'Exportar CSV',self.export_csv);box.addLayout(rangebox)
-        advanced=QHBoxLayout();self.path_filter=QLineEdit();self.path_filter.setPlaceholderText('Secuencia exacta opcional, p. ej. 1:BTN:fold > 1:SB:limp');advanced.addWidget(self.path_filter,1);self.actor_filter=QLineEdit();self.actor_filter.setPlaceholderText('Jugador concreto (opcional)');advanced.addWidget(self.actor_filter);self.include_hero=QCheckBox('Incluir Hero');advanced.addWidget(self.include_hero);box.addLayout(advanced)
+        advanced=QHBoxLayout();self.path_filter=QLineEdit();self.path_filter.setPlaceholderText('Secuencia exacta opcional, p. ej. 1:BTN:fold > 1:SB:limp');self.path_filter.hide();self.actor_filter=QLineEdit();self.actor_filter.setPlaceholderText('Jugador concreto (opcional)');advanced.addWidget(self.actor_filter);self.include_hero=QCheckBox('Incluir Hero');advanced.addWidget(self.include_hero);box.addLayout(advanced)
         split=QSplitter(Qt.Vertical);self.results=table();self.chart=Bars();split.addWidget(self.results);split.addWidget(self.chart);box.addWidget(split,1)
         self.notice=QLabel('');self.notice.setWordWrap(True);box.addWidget(self.notice)
         buttons=QHBoxLayout();self.button(buttons,'Inspeccionar manos del spot',self.inspect_hands);self.button(buttons,'Matriz de cartas observadas',self.show_range);box.addLayout(buttons)
+
+    def explorer_positions(self,format_):
+        c=self.filters['position'];old=c.currentText();c.clear();c.addItems(['Todos','SB','BB']+([] if format_=='HU' else ['BTN']))
+        if old!='BTN' or format_!='HU':c.setCurrentText(old)
 
     def current_filters(self):
         f={k:w.currentText() for k,w in self.filters.items() if w.currentText() and w.currentText()!='Todos'}
@@ -143,7 +159,7 @@ class Window(QMainWindow):
         win=QWidget(self,Qt.Window);win.setWindowTitle('Auditoría · primeras 200 decisiones');win.resize(1200,800);v=QVBoxLayout(win);t=table();fill(t,rows);v.addWidget(t);raw=QPlainTextEdit();raw.setReadOnly(True);v.addWidget(raw)
         def show(i,j):
             if i<len(rows):
-                data=self.store.con.execute('SELECT raw,events FROM hands WHERE hand_id=?',[rows[i]['hand_id']]).fetchone();raw.setPlainText(data[0]+'\n\nRECONSTRUCCIÓN (céntimos)\n'+json.dumps(json.loads(data[1]),indent=2))
+                data=self.store.con.execute('SELECT raw FROM hands WHERE hand_id=?',[rows[i]['hand_id']]).fetchone();raw.setPlainText(data[0]);self.replayer=Replayer(data[0],self);self.replayer.show()
         t.cellClicked.connect(show);win.show()
 
     def show_range(self):
@@ -171,7 +187,7 @@ class Window(QMainWindow):
         self.import_status=QLabel('Selecciona los TXT extraídos del archivo RAR.');box.addWidget(self.import_status)
         row=QHBoxLayout();self.import_buttons=[]
         self.import_buttons.append(self.button(row,'Elegir archivos TXT',lambda:self.choose_import(False)))
-        self.import_buttons.append(self.button(row,'Importar carpeta',lambda:self.choose_import(True)));box.addLayout(row)
+        self.import_buttons.append(self.button(row,'Importar carpeta',lambda:self.choose_import(True)));self.button(row,'Cancelar después del archivo actual',lambda:self.worker.requestInterruption() if self.worker and self.worker.isRunning() else None);box.addLayout(row)
         self.import_log=QPlainTextEdit();self.import_log.setReadOnly(True);box.addWidget(self.import_log,1)
         self.error_table=table();box.addWidget(self.error_table,1)
         self.button(box,'Actualizar informe de importación',self.refresh_import)
@@ -190,13 +206,14 @@ class Window(QMainWindow):
         self.refresh_all()
 
     def refresh_import(self):
-        self.import_status.setText(json.dumps(self.store.totals(),ensure_ascii=False))
+        t=self.store.totals();self.import_status.setText(f"{t['hands']:,} manos · {t['observations']:,} decisiones · {t['summaries']:,} resúmenes · {t['errors']:,} errores conservados")
         fill(self.error_table,self.store.rows('SELECT source,hand_id,error FROM errors LIMIT 500'))
 
     def build_players(self):
         box=self.page('Regulares y Fishes','Sin clasificar por defecto · Etiquetas manuales prioritarias · Confianza automática heurística')
+        scope=QHBoxLayout();scope.addWidget(QLabel('Estadísticas para clasificar'));self.player_format=QComboBox();self.player_format.addItems(['Todos','HU','3H']);scope.addWidget(self.player_format);box.addLayout(scope);self.player_format.currentTextChanged.connect(lambda _:self.refresh_players())
         self.players_table=table();box.addWidget(self.players_table,1)
-        row=QHBoxLayout();self.player_name=QLineEdit();self.player_name.setPlaceholderText('Jugador exacto');self.category=QComboBox();self.category.addItems(['Sin clasificar','Reg','Fish']);row.addWidget(self.player_name,1);row.addWidget(self.category)
+        row=QHBoxLayout();self.player_name=QLineEdit();self.player_name.setPlaceholderText('Jugador exacto');self.category=QComboBox();self.category.addItems(['Sin clasificar','Reg','Fish']);row.addWidget(self.player_name,1);row.addWidget(self.category);self.subprofile=QComboBox();row.addWidget(self.subprofile);self.category.currentTextChanged.connect(self.update_subprofiles);self.update_subprofiles(self.category.currentText())
         self.button(row,'Guardar etiqueta',self.save_label);box.addLayout(row)
         self.players_table.cellClicked.connect(lambda i,j:self.player_name.setText(self.players_table.item(i,0).text()))
         box.addWidget(QLabel('Reglas: el IC95 completo debe caber en el intervalo. Mínimo 30 manos con decisión; conflictos quedan sin clasificar.'))
@@ -204,17 +221,28 @@ class Window(QMainWindow):
         for spin,value in [(self.rule_low,0),(self.rule_high,100)]:spin.setRange(0,100);spin.setValue(value);spin.setSuffix('%')
         for label,w in [('Clase',self.rule_category),('Métrica',self.rule_metric),('Desde',self.rule_low),('Hasta',self.rule_high),('Muestra mínima',self.rule_min)]:rf.addWidget(QLabel(label));rf.addWidget(w)
         self.button(rf,'Añadir regla',self.add_rule);box.addLayout(rf)
-        self.rules=QPlainTextEdit('[]');self.rules.setMaximumHeight(140);box.addWidget(self.rules)
+        self.rules=QPlainTextEdit('[]');self.rules.hide();self.rules_list=QListWidget();self.rules_list.setMaximumHeight(150);box.addWidget(self.rules_list);self.button(box,'Eliminar regla seleccionada',self.remove_rule)
         self.button(box,'Aplicar reglas',lambda:(classify(self.store,json.loads(self.rules.toPlainText())),self.refresh_players()))
 
     def add_rule(self):
-        rules=json.loads(self.rules.toPlainText());rules.append(dict(category=self.rule_category.currentText(),metric=self.rule_metric.currentText(),low=self.rule_low.value()/100,high=self.rule_high.value()/100,min_hands=self.rule_min.value()));self.rules.setPlainText(json.dumps(rules,indent=2))
+        rules=json.loads(self.rules.toPlainText());rules.append(dict(format=None if self.player_format.currentText()=='Todos' else self.player_format.currentText(),category=self.rule_category.currentText(),metric=self.rule_metric.currentText(),low=self.rule_low.value()/100,high=self.rule_high.value()/100,min_hands=self.rule_min.value()));self.rules.setPlainText(json.dumps(rules,indent=2));self.show_rules()
+
+    def show_rules(self):
+        self.rules_list.clear()
+        for r in json.loads(self.rules.toPlainText()):self.rules_list.addItem(f"{r['category']} · {r['metric'].upper()} {r['low']:.0%}–{r['high']:.0%} · mínimo {r['min_hands']} manos · {r.get('format') or 'HU+3H'}")
+
+    def remove_rule(self):
+        rules=json.loads(self.rules.toPlainText());index=self.rules_list.currentRow()
+        if index>=0:rules.pop(index);self.rules.setPlainText(json.dumps(rules));self.show_rules()
+
+    def update_subprofiles(self,category):
+        self.subprofile.clear();self.subprofile.addItem('Sin subperfil');self.subprofile.addItems(PROFILES[category])
 
     def save_label(self):
         if not self.player_name.text().strip():raise ValueError('Selecciona un jugador')
-        self.store.label(self.player_name.text(),self.category.currentText());self.refresh_players();self.refresh_explorer()
+        self.store.label(self.player_name.text(),self.category.currentText(),profile=None if self.subprofile.currentIndex()==0 else self.subprofile.currentText());self.refresh_players();self.refresh_explorer()
 
-    def refresh_players(self):fill(self.players_table,player_profiles(self.store))
+    def refresh_players(self):fill(self.players_table,player_profiles(self.store,None if self.player_format.currentText()=='Todos' else self.player_format.currentText()))
 
     def build_leaks(self):
         box=self.page('Leak Finder','Desviaciones frente a referencias explícitas · Sin baselines inventados · Sin afirmación de rentabilidad')
@@ -234,18 +262,18 @@ class Window(QMainWindow):
 
     def build_strategies(self):
         box=self.page('Strategy Builder','Cuaderno de hipótesis explotativas · Separa población, stack y situación')
-        form=QFormLayout();self.strategy_name=QLineEdit();self.strategy_population=QComboBox();self.strategy_population.addItems(['Reg','Fish']);self.strategy_action=QLineEdit();self.strategy_filters=QLineEdit('{}');self.strategy_reason=QPlainTextEdit();self.strategy_reason.setMaximumHeight(150)
-        for title,w in [('Nombre',self.strategy_name),('Población',self.strategy_population),('Filtros del spot (JSON)',self.strategy_filters),('Acción propuesta',self.strategy_action),('Evidencia y razonamiento',self.strategy_reason)]:form.addRow(title,w)
+        form=QFormLayout();self.strategy_name=QLineEdit();self.strategy_population=QComboBox();self.strategy_population.addItems(['Reg','Fish']);self.strategy_action=QLineEdit();self.strategy_state=QComboBox();self.strategy_state.addItems(['En investigación','Hipótesis','Frecuencia validada','EV evaluado','Descartado']);self.strategy_state.setCurrentText('Hipótesis');self.strategy_filters=QLineEdit('{}');self.strategy_filters.hide();self.strategy_reason=QPlainTextEdit();self.strategy_reason.setMaximumHeight(150)
+        for title,w in [('Nombre',self.strategy_name),('Población',self.strategy_population),('Estado',self.strategy_state),('Acción propuesta',self.strategy_action),('Evidencia y razonamiento',self.strategy_reason)]:form.addRow(title,w)
         box.addLayout(form);row=QHBoxLayout();self.button(row,'Copiar selección del Explorer',lambda:self.strategy_filters.setText(json.dumps(self.current_filters())));self.button(row,'Guardar estrategia',self.save_strategy);self.button(row,'Exportar estrategias',self.export_strategies);box.addLayout(row)
         self.strategy_table=table();box.addWidget(self.strategy_table,1)
         self.strategy_table.cellClicked.connect(self.load_strategy)
 
     def save_strategy(self):
-        save_strategy(self.store,self.strategy_name.text(),dict(population=self.strategy_population.currentText(),filters=json.loads(self.strategy_filters.text()),action=self.strategy_action.text(),rationale=self.strategy_reason.toPlainText()));self.refresh_strategies()
+        save_strategy(self.store,self.strategy_name.text(),dict(status=self.strategy_state.currentText(),population=self.strategy_population.currentText(),filters=json.loads(self.strategy_filters.text()),action=self.strategy_action.text(),rationale=self.strategy_reason.toPlainText()));self.refresh_strategies()
     def refresh_strategies(self):
-        self.strategy_docs=self.store.documents('strategy');fill(self.strategy_table,[dict(name=d['name'],**d['payload']) for d in self.strategy_docs])
+        self.strategy_docs=self.store.documents('strategy');fill(self.strategy_table,[dict(nombre=d['name'],población=d['payload']['population'],acción=d['payload']['action'],estado=d['payload'].get('status','Hipótesis'),muestra=d['payload'].get('evidence',{}).get('totals',{}).get('opportunities',''),fecha=d['payload'].get('updated_at','')) for d in self.strategy_docs])
     def load_strategy(self,i,j):
-        d=self.strategy_docs[i];p=d['payload'];self.strategy_name.setText(d['name']);self.strategy_population.setCurrentText(p['population']);self.strategy_action.setText(p['action']);self.strategy_filters.setText(json.dumps(p['filters']));self.strategy_reason.setPlainText(p['rationale'])
+        d=self.strategy_docs[i];p=d['payload'];self.strategy_name.setText(d['name']);self.strategy_state.setCurrentText(p.get('status','Hipótesis'));self.strategy_population.setCurrentText(p['population']);self.strategy_action.setText(p['action']);self.strategy_filters.setText(json.dumps(p['filters']));self.strategy_reason.setPlainText(p['rationale'])
     def export_strategies(self):
         name,_=QFileDialog.getSaveFileName(self,'Exportar estrategias','strategies.json','JSON (*.json)')
         if name:Path(name).write_text(json.dumps(self.store.documents('strategy'),ensure_ascii=False,indent=2),encoding='utf-8')
@@ -254,13 +282,17 @@ class Window(QMainWindow):
         box=self.page('Referencias y EV condicional','Importa referencias propias mediante el esquema JSON documentado. No se infieren rangos desde cartas ocultas.')
         self.button(box,'Importar referencia JSON',self.load_reference);self.references_table=table();box.addWidget(self.references_table,1)
         box.addWidget(QLabel('Modelo limitado: apuesta terminal HU, rival solo foldea o paga, sin raises ni apuestas futuras. Equity aportada por ti.'))
-        self.ev_input=QPlainTextEdit('{}');self.ev_input.setPlaceholderText('JSON: pot, bet, folds, opportunities, equity_when_called');self.ev_input.setMaximumHeight(130);box.addWidget(self.ev_input)
-        self.ev_result=QLabel('EV sin estimar: faltan supuestos y datos.');self.ev_result.setWordWrap(True)
-        self.button(box,'Evaluar escenario condicional',lambda:self.ev_result.setText(json.dumps(terminal_bet_ev(**json.loads(self.ev_input.toPlainText())),ensure_ascii=False,indent=2)));box.addWidget(self.ev_result)
+        self.ev_fields={};form=QFormLayout()
+        for key,label,value in [('pot','Bote actual (fichas)',100),('bet','Apuesta (fichas)',50),('folds','Folds observados',0),('opportunities','Respuestas observadas',0),('equity_when_called','Equity al pagar (0–1)',0)]:
+            spin=QDoubleSpinBox();spin.setRange(0,1 if key=='equity_when_called' else 10000000);spin.setDecimals(3 if key=='equity_when_called' else 0);spin.setValue(value);self.ev_fields[key]=spin;form.addRow(label,spin)
+        box.addLayout(form);self.ev_result=QLabel('EV sin estimar: introduce los datos y la equity de referencia.');self.ev_result.setWordWrap(True)
+        self.button(box,'Evaluar escenario condicional',self.evaluate_ev);box.addWidget(self.ev_result)
+    def evaluate_ev(self):
+        result=terminal_bet_ev(**{k:w.value() for k,w in self.ev_fields.items()});lo,hi=result['conditional_interval'];self.ev_result.setText(f"EV condicional: {result['ev']:.2f} fichas · intervalo {lo:.2f} a {hi:.2f}. Solo incertidumbre en fold frequency; equity y modelo se consideran fijos.")
     def load_reference(self):
         name,_=QFileDialog.getOpenFileName(self,'Referencia',filter='JSON (*.json)')
         if name:import_reference(self.store,Path(name).stem,json.loads(Path(name).read_text(encoding='utf-8')));self.refresh_references()
-    def refresh_references(self):fill(self.references_table,self.store.documents('reference'))
+    def refresh_references(self):fill(self.references_table,[dict(nombre=d['name'],fuente=d['payload'].get('source',''),referencias=len(d['payload'].get('baselines',[])),rangos=len(d['payload'].get('ranges',[]))) for d in self.store.documents('reference')])
 
     def refresh_all(self):
         for key,combo in self.filters.items():
@@ -268,17 +300,33 @@ class Window(QMainWindow):
             values=['Reg','Fish','Sin clasificar'] if key in ('population','opponent_population') else [str(r[0]) for r in self.store.con.execute(f'SELECT DISTINCT "{key}" FROM observations ORDER BY 1').fetchall()]
             combo.addItems(values)
             if old in values:combo.setCurrentText(old)
-        self.refresh_explorer();self.refresh_import();self.refresh_players();self.refresh_leaks();self.refresh_strategies();self.refresh_references()
+        self.explorer_positions(self.filters['format'].currentText());self.refresh_explorer();self.refresh_import();self.refresh_players();self.refresh_leaks();self.refresh_strategies();self.refresh_references()
         docs=self.store.documents('rules')
         if docs:self.rules.setPlainText(json.dumps(docs[0]['payload'],indent=2))
+        self.show_rules()
 
     def closeEvent(self,event):
-        if self.worker and self.worker.isRunning():QMessageBox.information(self,'Importación en curso','Espera a que termine la importación antes de cerrar.');event.ignore();return
+        if (self.worker and self.worker.isRunning()) or (self.sequence_panel.worker and self.sequence_panel.worker.isRunning()):QMessageBox.information(self,'Importación en curso','Espera a que termine la importación antes de cerrar.');event.ignore();return
+        self.store.save_document('preferences','sequence',dict(pattern=self.sequence_panel.pattern.to_dict(),filters=self.sequence_panel.current_filters()))
         self.store.close();event.accept()
+
+
+class PrepareDatabase(QThread):
+    progress=Signal(int)
+    def __init__(self,path):super().__init__();self.path=path;self.error=None
+    def run(self):
+        try:
+            s=Store(self.path,progress=self.progress.emit,cancelled=self.isInterruptionRequested);s.close()
+        except Exception as exc:self.error=str(exc)
 
 
 def main():
     import argparse,sys
     p=argparse.ArgumentParser();p.add_argument('--db');args=p.parse_args()
     app=QApplication(sys.argv);app.setApplicationName('Spin Population Lab');app.setFont(QFont('Segoe UI',10))
+    loading=QProgressDialog('Preparando base local. Si hay una migración, se crea un backup antes de actualizar.','Cancelar',0,0);loading.setWindowTitle('Spin Population Lab');loading.setMinimumDuration(0);loading.setMinimumWidth(540);loading.show()
+    preparation=PrepareDatabase(args.db);loop=QEventLoop();preparation.finished.connect(loop.quit);preparation.progress.connect(lambda n:loading.setLabelText(f'Migrando contexto: {n:,} decisiones reconstruidas.'))
+    loading.canceled.connect(preparation.requestInterruption);preparation.start();loop.exec();loading.close()
+    if preparation.error:QMessageBox.critical(None,'Preparación interrumpida',preparation.error);return 1
+    if preparation.isInterruptionRequested():return 0
     w=Window(args.db);w.showMaximized();return app.exec()

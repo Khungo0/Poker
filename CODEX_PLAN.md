@@ -1,9 +1,11 @@
-# Estado y continuación
+# Estado y continuación · iteración 0.3
 
 ## Objetivo
-Analizador offline de tendencias poblacionales de Spins iPoker/ChampionPoker, especialmente €5, con Reg/Fish, HU/3H y estudio explotativo. Windows: 1920×1080 y 2560×1440. Consultar AGENTS.md, README.md, docs/DATA_MODEL.md y docs/VALIDATION.md antes de cambiar semánticas.
+Analizador offline de tendencias poblacionales de Spins iPoker/ChampionPoker, especialmente €5, con Reg/Fish, HU/3H y estudio explotativo. Windows: 1440×900, 1920×1080 y 2560×1440. Consultar AGENTS.md, README.md, docs/DATA_MODEL.md y docs/VALIDATION.md antes de cambiar semánticas.
 
-## Completado en esta iteración
+Leer primero docs/ITERATION_03.md y docs/PRODUCT_REQUEST.md. Motor de secuencias, migración 1→2, preset third barrel limped, nuevo replayer/panel y comparación por ramas ya están implementados. Continuar sobre estos componentes; conservar sus regresiones y consultar los límites pendientes antes de afirmar una fase terminada.
+
+## Base de la iteración anterior
 - Parser del TXT real y resúmenes, antes/all-in, cartas desconocidas, contabilidad entera y validación de acciones/bote.
 - DuckDB, originales archivados, duplicados/conflictos, cuarentena y regeneración de datos derivados.
 - Oportunidades pre/postflop y path completo, filtros, IC y concentración de muestra.

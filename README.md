@@ -1,6 +1,15 @@
-# Spin Population Lab · escritorio 0.2
+# Spin Population Lab · escritorio 0.3
 
-Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
+Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
+
+
+## Nuevo: investigación por secuencias
+
+Abre **Panel de estudio → Tercer barrel · respuestas**, selecciona stake y población y pulsa **Investigar secuencia**. Usa el constructor plegable para añadir acciones/roles/condiciones. Doble clic en una acción abre la rama siguiente; doble clic en una mano abre el replayer. Guarda la investigación con un nombre para recuperarla desde el panel de estudio.
+
+La primera apertura de una base 0.2 crea un backup verificado y migra/regenera el contexto; puede tardar alrededor de un minuto en esta muestra. Se muestra progreso y la operación admite cancelación con rollback. **Datos y configuración** permite crear backups y restaurarlos como una copia nueva. Conserva también `imports/`.
+
+El [informe de esta iteración](docs/ITERATION_03.md) detalla resultados, cambios estadísticos, validación y fases pendientes. El spot prioritario tiene 196 respuestas verificadas con un algoritmo independiente; **no se califican como Fish sin etiquetas**. La especificación completa está en [PRODUCT_REQUEST.md](docs/PRODUCT_REQUEST.md).
 
 ## Abrir en Windows
 
@@ -56,6 +65,6 @@ Para construir Windows: `powershell -ExecutionPolicy Bypass -File packaging/buil
 - Validación independiente contra replayer de la sala; stress/benchmark con millones de manos, paginación y consultas en segundo plano.
 - Adaptadores de formatos nativos de solvers; matrices interactivas de sus rangos y modelos EV completos multi-street/raises/sidepots/ICM.
 - Inferencia robusta por jugador/torneo y corrección de búsquedas múltiples; calibración externa de las clasificaciones. Los IC actuales son binomiales exploratorios.
-- Migración guiada de la antigua base SQLite y asistente más completo de spots/estrategias. El prototipo Streamlit/XML original permanece en `app.py`, requiere `requirements-legacy.txt` y usa otra BD; no es el flujo recomendado para los TXT reales.
+- Migración guiada de la antigua base SQLite y finalización del asistente de estadísticas/rangos. El prototipo Streamlit/XML original permanece en `app.py`, requiere `requirements-legacy.txt` y usa otra BD; no es el flujo recomendado para los TXT reales.
 
 El repositorio distribuye código y fixtures con nombres sustituidos; los historiales originales y la base personal están excluidos de Git. Usar únicamente historiales propios o autorizados.

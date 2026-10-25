@@ -2,21 +2,29 @@
 import json, math
 from .mathutils import wilson
 
-FILTERS={'spot','street','position','format','stake','texture','previous','modality','actor','opponent','board','path','can_raise','check_raise_opportunity'}
-RANGES={'bb_eff','bb_eff_min','facing_bb','facing_pct','size_bb','size_pct'}
+FILTERS={'spot','street','position','format','stake','texture','previous','modality','actor','opponent','board','path','can_raise','check_raise_opportunity','pot_type','active_players','tournament_format','barrel','facing_barrel'}
+RANGES={'bb_eff','bb_eff_min','facing_bb','facing_pct','size_bb','size_pct','initial_stack_bb','initial_eff_bb','street_eff_bb','spr'}
 
 
 def selection(filters):
+    if filters.get('format')=='HU' and filters.get('position')=='BTN':raise ValueError('En HU el botón es SB; no existe una tercera posición BTN.')
     clauses=[] if filters.get('include_hero',False) else ["o.card_source <> 'dealt'"]; args=[]
     for key,value in filters.items():
         if key=='include_hero':
             if not isinstance(value,bool):raise ValueError('include_hero must be boolean')
             continue
         if value is None or value=='Todos': continue
-        if key in FILTERS: clauses.append(f'o."{key}"=?'); args.append(value)
+        if key in ('date_from','date_to'):
+            from datetime import date
+            day=date.fromisoformat(value)
+            clauses.append('CAST(o.played_at AS DATE) '+('>=' if key=='date_from' else '<=')+' ?');args.append(day)
+        elif key in FILTERS: clauses.append(f'o."{key}"=?'); args.append(value)
         elif key in RANGES:
             if len(value)!=2 or not all(math.isfinite(float(v)) for v in value) or value[0]>value[1]: raise ValueError('Invalid range')
             clauses.append(f'o."{key}" BETWEEN ? AND ?'); args.extend(value)
+        elif key in ('actor_profile','opponent_profile'):
+            alias='l' if key=='actor_profile' else 'lo'
+            clauses.append(f"(SELECT json_extract_string(payload,'$.profile') FROM documents WHERE kind='player_profile' AND name={alias}.player)=?");args.append(value)
         elif key in ('population','opponent_population'):
             alias='l' if key=='population' else 'lo'
             clauses.append(f"COALESCE({alias}.category,'Sin clasificar')=?"); args.append(value)
@@ -41,34 +49,39 @@ def explore(store,filters):
     return totals,rows
 
 
-def player_profiles(store):
+def player_profiles(store,format_=None):
     return store.rows('''WITH per_hand AS (
         SELECT actor,hand_id,bool_or(result IN ('call','limp','raise','shove')) voluntary,
-        bool_or(result IN ('raise','shove')) raised FROM observations WHERE street=1 AND card_source<>'dealt' GROUP BY actor,hand_id)
+        bool_or(result IN ('raise','shove')) raised FROM observations WHERE street=1 AND card_source<>'dealt' AND (? IS NULL OR format=?) GROUP BY actor,hand_id)
         SELECT actor AS player,count(*) AS hands,sum(CAST(voluntary AS INTEGER)) AS vpip_cases,
         sum(CAST(raised AS INTEGER)) AS pfr_cases,avg(CAST(voluntary AS INTEGER)) AS vpip,
         avg(CAST(raised AS INTEGER)) AS pfr,COALESCE(l.category,'Sin clasificar') category,
         l.origin,l.confidence,l.reason FROM per_hand LEFT JOIN labels l ON actor=l.player
-        GROUP BY ALL ORDER BY hands DESC''')
+        GROUP BY ALL ORDER BY hands DESC''',[format_,format_])
 
 
 def classify(store,rules):
     # Confidence is evidence strength of a rule, never a calibrated P(Reg/Fish).
     for rule in rules:
+        from .profiles import PROFILES
+        if rule.get('format') not in (None,'HU','3H'):raise ValueError('Invalid rule format')
+        if rule.get('profile') and rule['profile'] not in PROFILES.get(rule['category'],[]):raise ValueError('Invalid rule profile')
         if rule['category'] not in ('Reg','Fish') or rule['metric'] not in ('vpip','pfr'): raise ValueError('Invalid rule')
         if rule['min_hands']<30 or not 0<=rule['low']<=rule['high']<=1: raise ValueError('Invalid rule limits')
     store.con.execute("DELETE FROM labels WHERE origin='auto'")
     assigned=0
+    by_format={f:{p['player']:p for p in player_profiles(store,f)} for f in ('HU','3H')}
     for p in player_profiles(store):
         if p['origin']=='manual': continue
         matches=[]
         for r in rules:
-            if p['hands']<r['min_hands']: continue
-            lo,hi=wilson(p[r['metric']+'_cases'],p['hands'])
+            sample=by_format.get(r.get('format'),{}).get(p['player']) if r.get('format') else p
+            if not sample or sample['hands']<r['min_hands']: continue
+            lo,hi=wilson(sample[r['metric']+'_cases'],sample['hands'])
             if lo>=r['low'] and hi<=r['high']: matches.append(r)
-        if len({r['category'] for r in matches})!=1: continue
-        r=matches[0]; lo,hi=wilson(p[r['metric']+'_cases'],p['hands'])
-        store.label(p['player'],r['category'],'auto',1-(hi-lo),f"Regla {r['metric']}; IC95 [{lo:.3f}, {hi:.3f}]; n={p['hands']}. Confianza heurística, no probabilidad de clase.")
+        if len({(r['category'],r.get('profile')) for r in matches})!=1: continue
+        r=matches[0];sample=by_format[r['format']][p['player']] if r.get('format') else p;lo,hi=wilson(sample[r['metric']+'_cases'],sample['hands'])
+        store.label(p['player'],r['category'],'auto',1-(hi-lo),f"Regla {r['metric']}; IC95 [{lo:.3f}, {hi:.3f}]; n={sample['hands']}; formato={r.get('format','HU+3H')}. Confianza heurística, no probabilidad de clase.",profile=r.get('profile'))
         assigned+=1
     store.save_document('rules','active',rules)
     return assigned
@@ -96,10 +109,19 @@ def leaks(store,baselines):
 
 
 def save_strategy(store,name,payload):
+    if not name.strip():raise ValueError('Nombre obligatorio')
+    from datetime import datetime, timezone
+    from uuid import uuid4
     if payload.get('population') not in ('Reg','Fish'): raise ValueError('Choose Reg or Fish')
     selection(payload['filters'])
     if not payload.get('action') or not payload.get('rationale'): raise ValueError('Action and rationale required')
-    payload['status']='Hipótesis de estudio; EV no demostrado'
+    status=payload.get('status','Hipótesis')
+    if status not in ('En investigación','Hipótesis','Frecuencia validada','EV evaluado','Descartado'):raise ValueError('Estado inválido')
+    totals,rows=explore(store,dict(payload['filters'],population=payload['population']))
+    if status=='Frecuencia validada' and totals['opportunities']==0:raise ValueError('No hay oportunidades para validar esta frecuencia.')
+    if status=='EV evaluado' and not (payload.get('ev_model') and payload.get('ev_assumptions') and isinstance(payload.get('ev'),(int,float)) and math.isfinite(payload['ev'])):raise ValueError('EV evaluado requiere modelo, supuestos y resultado numérico explícitos.')
+    payload=dict(payload,status=status,evidence=dict(totals=totals,actions=rows),updated_at=datetime.now(timezone.utc).isoformat(),limitations='Etiquetas actuales; frecuencias observadas no demuestran EV.')
+    store.save_document('strategy_version',name+'/'+uuid4().hex,payload)
     store.save_document('strategy',name,payload)
 
 

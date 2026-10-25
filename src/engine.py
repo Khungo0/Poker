@@ -1,5 +1,6 @@
 """Betting replay and observable decision opportunities; no hidden-card inference."""
 from collections import Counter
+from .context import enrich
 
 
 class ReplayError(ValueError): pass
@@ -28,6 +29,7 @@ def replay(hand):
     observations=[]; events=[]; street=1; high=hand.bb; pot=0; last_aggressor=''; last_kind='unopened'; raises=0
     checked=set(); acted=set(); prior_aggressor=''; prior_checked=False; street_aggressor=''; previous='none'; last_size=None
     street_start=remaining.copy(); last_target=0; opening_pot=0; history=[]; last_full_raise=hand.bb; faced={}; preflop_aggressor=''; pending=None; cursor=0
+    street_active=set(names)
     pre_order=[p['name'] for p in order]
     post_order=pre_order[1:]+pre_order[:1]
     def needed():
@@ -49,7 +51,8 @@ def replay(hand):
                 if kind in posted or pos[actor]!=kind.upper(): raise ReplayError('Blind position mismatch')
                 posted.add(kind); contributed[actor]+=amount
             continue
-        if pending is None: pending=needed()
+        if pending is None:
+            pending=needed(); street_start={n:remaining[n]+contributed[n] for n in names}
         if rd < street or rd>street+1: raise ReplayError('Street order')
         if rd!=street:
             if pending.intersection(needed()): raise ReplayError('Incomplete betting round')
@@ -60,7 +63,7 @@ def replay(hand):
             prior_checked=not bool(street_aggressor or (last_aggressor if street==1 else ''))
             street=rd; contributed=dict.fromkeys(names,0); high=0; checked=set(); acted=set(); raises=0
             street_aggressor=''; last_aggressor=''; last_kind='unopened'; previous='none'; last_size=None
-            street_start=remaining.copy(); opening_pot=pot; last_full_raise=hand.bb; faced={}; pending=needed(); cursor=0
+            street_start=remaining.copy(); street_active=set(active); opening_pot=pot; last_full_raise=hand.bb; faced={}; pending=needed(); cursor=0
         if not {'SB','BB'}.issubset(pos.values()): raise ReplayError('Missing blinds')
         for n in names:
             pos.setdefault(n,'BTN')
@@ -125,9 +128,12 @@ def replay(hand):
         known=hand.known_cards.get(actor,{})
         observation=dict(hand_id=hand.hand_id,seq=i,session=hand.tournament,actor=actor,opponent=opponent,opponents=opponents,
             stake=hand.stake,format=hand.format,modality=hand.modality,street=street,position=pos[actor],spot=spot,
-            previous=previous,path=' > '.join(history),bb_eff=max(effs),bb_eff_min=min(effs),facing_bb=due/hand.bb,
+            previous=previous,path=' > '.join(history),bb_eff=max(effs),bb_eff_min=min(effs),facing_bb=min(due,before)/hand.bb,
             facing_pct=last_size,board=' '.join(hand.boards.get(street,[])),texture=texture(hand.boards.get(street,[])),
-            pot=pot_before/100,remaining=before/100,result=result,allin=allin,can_raise=can_raise,check_raise_opportunity=street>1 and actor in checked and due>0 and can_raise,eligible=eligible,
+            pot=pot_before/100,remaining=before/100,active_players=len(active),
+            initial_stack_bb=stacks[actor]/hand.bb,initial_eff_bb=max(min(stacks[actor],stacks[n]) for n in names if n!=actor)/hand.bb,
+            street_eff_bb=max(min(street_start[actor],street_start[n]) for n in street_active if n!=actor)/hand.bb,
+            spr=max(min(street_start[actor],street_start[n]) for n in street_active if n!=actor)/opening_pot if street>1 and opening_pot else None,result=result,allin=allin,can_raise=can_raise,check_raise_opportunity=street>1 and actor in checked and due>0 and can_raise,eligible=eligible,
             size_bb=(contributed[actor]+delta)/hand.bb if delta else None,
             size_pct=delta/pot_before if delta and pot_before else None,
             known_cards=' '.join(known.get('cards',[])),card_source=known.get('source','unknown'))
@@ -148,7 +154,7 @@ def replay(hand):
         elif street==1 and kind=='call' and raises==0: last_kind='limp'
         pending.discard(actor); faced[actor]=high
         history.append(f'{street}:{pos[actor]}:{result}'); previous=result; acted.add(actor)
-        events.append(dict(seq=i,street=street,actor=actor,kind=kind,delta=delta,raw_delta=raw_delta,declared_allin=declared_allin,total=contributed[actor],remaining=remaining[actor],pot=pot,allin=allin))
+        events.append(dict(seq=i,street=street,actor=actor,kind=kind,delta=delta,raw_delta=raw_delta,declared_allin=declared_allin,total=contributed[actor],remaining=remaining[actor],pot=pot,allin=allin,stacks=remaining.copy(),bets=contributed.copy()))
     if len(active)>1:
         if pending is not None and pending.intersection(needed()): raise ReplayError('Incomplete final round')
         if any(remaining[n]>0 and contributed[n]<max(contributed[x] for x in active) for n in active): raise ReplayError('Unsettled final call')
@@ -161,4 +167,4 @@ def replay(hand):
     if pot!=hand.pot: raise ReplayError(f'Pot mismatch: reconstructed {pot}, reported {hand.pot}')
     if sum(hand.wins.values())+hand.rake!=pot: raise ReplayError('Payout mismatch')
     if any(n not in active for n in hand.wins): raise ReplayError('Folded winner')
-    return observations,events,dict(pot=pot,contributions=paid,remaining=remaining)
+    return enrich(hand,observations),events,dict(pot=pot,contributions=paid,remaining=remaining)

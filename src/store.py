@@ -5,6 +5,9 @@ import json, os, tempfile, uuid
 import duckdb
 from .history import read_text, PARSER_VERSION
 from .engine import replay
+from .context import CONTEXT_TYPES, ANALYSIS_VERSION
+from .profiles import PROFILES
+from .migrations import backup_database, SCHEMA_VERSION
 
 
 def default_path():
@@ -19,45 +22,71 @@ OBS_TYPES={
  'board':'VARCHAR','texture':'VARCHAR','pot':'DOUBLE','remaining':'DOUBLE','result':'VARCHAR','allin':'BOOLEAN',
  'check_raise_opportunity':'BOOLEAN','can_raise':'BOOLEAN','eligible':'VARCHAR[]','size_bb':'DOUBLE','size_pct':'DOUBLE','known_cards':'VARCHAR','card_source':'VARCHAR'}
 
+OBS_TYPES.update(CONTEXT_TYPES)
 
 class Store:
-    def __init__(self,path=None):
+    def __init__(self,path=None,progress=None,cancelled=None):
         self.path=Path(path or default_path()); self.path.parent.mkdir(parents=True,exist_ok=True)
         self.con=duckdb.connect(str(self.path))
         self.con.execute('SET threads=4')
+        old_tables={r[0] for r in self.con.execute('SHOW TABLES').fetchall()}
+        if old_tables and 'metadata' not in old_tables:
+            self.con.close();raise ValueError('La base no pertenece a Spin Population Lab.')
+        version=self.con.execute('SELECT version FROM metadata').fetchone()[0] if 'metadata' in old_tables else SCHEMA_VERSION
+        if version not in (1,SCHEMA_VERSION):
+            self.con.close();raise ValueError('Unsupported database version')
+        self.migration_backup=backup_database(self.path,self.con,'schema-1-to-2') if version==1 else None
         self.con.execute('''CREATE TABLE IF NOT EXISTS metadata(version INTEGER);
-        INSERT INTO metadata SELECT 1 WHERE NOT EXISTS (SELECT 1 FROM metadata);
+        INSERT INTO metadata SELECT 2 WHERE NOT EXISTS (SELECT 1 FROM metadata);
         CREATE TABLE IF NOT EXISTS imports(digest VARCHAR PRIMARY KEY, source VARCHAR, archived VARCHAR, report JSON);
         CREATE TABLE IF NOT EXISTS hands(hand_id VARCHAR PRIMARY KEY, tournament VARCHAR, stake VARCHAR, format VARCHAR, played_at VARCHAR, raw VARCHAR, digest VARCHAR, parser VARCHAR, pot BIGINT, players JSON, events JSON);
         CREATE TABLE IF NOT EXISTS errors(id VARCHAR, source VARCHAR, hand_id VARCHAR, error VARCHAR, raw VARCHAR);
         CREATE TABLE IF NOT EXISTS summaries(tournament VARCHAR, digest VARCHAR PRIMARY KEY, raw VARCHAR);
         CREATE TABLE IF NOT EXISTS labels(player VARCHAR PRIMARY KEY, category VARCHAR, origin VARCHAR, confidence DOUBLE, reason VARCHAR);
         CREATE TABLE IF NOT EXISTS documents(kind VARCHAR, name VARCHAR, payload JSON, PRIMARY KEY(kind,name));''')
-        if self.con.execute('SELECT version FROM metadata').fetchone()[0]!=1: raise ValueError('Unsupported database version')
+        self.con.execute('CREATE TABLE IF NOT EXISTS label_history(id VARCHAR, player VARCHAR, category VARCHAR, origin VARCHAR, confidence DOUBLE, reason VARCHAR, recorded_at TIMESTAMP DEFAULT current_timestamp)')
+        self.con.execute('CREATE TABLE IF NOT EXISTS analysis_metadata(version INTEGER)')
         self.con.execute('CREATE TABLE IF NOT EXISTS observations('+','.join('"'+k+'" '+v for k,v in OBS_TYPES.items())+', PRIMARY KEY(hand_id,seq))')
-        existing={r[1] for r in self.con.execute("PRAGMA table_info('observations')").fetchall()}
-        for name,typ in OBS_TYPES.items():
-            if name not in existing:self.con.execute(f'ALTER TABLE observations ADD COLUMN "{name}" {typ}')
+        if version==1:
+            try:
+                self.con.execute('BEGIN')
+                existing={r[1] for r in self.con.execute("PRAGMA table_info('observations')").fetchall()}
+                for name,typ in OBS_TYPES.items():
+                    if name not in existing:self.con.execute(f'ALTER TABLE observations ADD COLUMN "{name}" {typ}')
+                self.rebuild_analysis(transaction=False,backup=False,progress=progress,cancelled=cancelled)
+                self.con.execute('UPDATE metadata SET version=2')
+                self.con.execute('COMMIT')
+            except Exception:
+                self.con.execute('ROLLBACK');self.con.close();raise
+        if not self.con.execute('SELECT count(*) FROM analysis_metadata').fetchone()[0]:
+            self.con.execute('INSERT INTO analysis_metadata VALUES (?)',[ANALYSIS_VERSION])
 
-    def rebuild_analysis(self):
+    def rebuild_analysis(self,transaction=True,backup=True,progress=None,cancelled=None):
         # Original hands are immutable; regenerate derived observations transactionally.
-        self.con.execute('BEGIN')
+        if backup:backup_database(self.path,self.con,'rebuild')
+        if transaction:self.con.execute('BEGIN')
         try:
             self.con.execute('DELETE FROM observations')
             cursor=''; total=0
             while True:
                 batch=self.con.execute('SELECT hand_id,raw FROM hands WHERE hand_id>? ORDER BY hand_id LIMIT 1000',[cursor]).fetchall()
                 if not batch: break
+                if cancelled and cancelled():raise InterruptedError('Rebuild cancelled; previous observations retained')
                 rows=[]
                 for ident,raw in batch:
                     hands,errors,_=read_text(raw.encode())
                     if errors or len(hands)!=1: raise ValueError('Stored hand no longer parses: '+ident)
                     rows.extend(replay(hands[0])[0])
                 self.bulk('observations',rows,OBS_TYPES);total+=len(rows);cursor=batch[-1][0]
+                if progress:progress(total)
             self.con.execute('UPDATE hands SET parser=?',[PARSER_VERSION])
-            self.con.execute('COMMIT');return total
+            self.con.execute('DELETE FROM analysis_metadata')
+            self.con.execute('INSERT INTO analysis_metadata VALUES (?)',[ANALYSIS_VERSION])
+            if transaction:self.con.execute('COMMIT')
+            return total
         except Exception:
-            self.con.execute('ROLLBACK');raise
+            if transaction:self.con.execute('ROLLBACK')
+            raise
 
     def close(self): self.con.close()
 
@@ -113,9 +142,17 @@ class Store:
             self.con.execute('ROLLBACK'); raise
         return report
 
-    def label(self,player,category,origin='manual',confidence=None,reason='Asignación del usuario'):
+    def label(self,player,category,origin='manual',confidence=None,reason='Asignación del usuario',profile=None):
         if category not in ('Reg','Fish','Sin clasificar'): raise ValueError('Invalid category')
-        self.con.execute('INSERT INTO labels VALUES (?,?,?,?,?) ON CONFLICT(player) DO UPDATE SET category=excluded.category, origin=excluded.origin, confidence=excluded.confidence, reason=excluded.reason',[player,category,origin,confidence,reason])
+        if profile is not None and profile not in PROFILES[category]:raise ValueError('Perfil incompatible con categoría')
+        self.con.execute('BEGIN')
+        try:
+            self.con.execute('INSERT INTO label_history(id,player,category,origin,confidence,reason) VALUES (?,?,?,?,?,?)',[str(uuid.uuid4()),player,category,origin,confidence,reason])
+            self.con.execute('INSERT INTO labels VALUES (?,?,?,?,?) ON CONFLICT(player) DO UPDATE SET category=excluded.category, origin=excluded.origin, confidence=excluded.confidence, reason=excluded.reason',[player,category,origin,confidence,reason])
+            self.save_document('player_profile',player,dict(profile=profile,category=category))
+            self.con.execute('COMMIT')
+        except Exception:
+            self.con.execute('ROLLBACK');raise
 
     def save_document(self,kind,name,payload):
         if not name.strip(): raise ValueError('Nombre obligatorio')

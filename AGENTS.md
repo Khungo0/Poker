@@ -2,7 +2,7 @@
 
 - Objetivo: analizador offline de tendencias poblacionales **Regs vs Fishes** para Spins iPoker, HU y 3-handed. Interfaz en español para Windows.
 - No implementar HUD, lectura de mesas en vivo, asistencia en tiempo real, bots, scraping ni datamining. Usar solamente historiales propios/importados con permiso de la sala.
-- Fuente de verdad: historiales XML reales aportados por el usuario; no adivinar códigos de acciones o semántica de importes. Ante dudas, registrar warnings y no producir estadísticas falsas.
+- Fuente de verdad: historiales TXT/XML reales aportados por el usuario; no adivinar códigos de acciones o semántica de importes. Ante dudas, registrar warnings y no producir estadísticas falsas.
 - Para cada estadística registrar la **oportunidad** real y el resultado; validar con fixtures y denominadores. Mantener separado jugador que actúa vs tipo de oponente.
 - Reg/Fish: por defecto etiquetado manual y 'Sin clasificar'; no afirmar clasificación automática fiable con muestras pequeñas.
 - Nunca asumir cartas privadas conocidas si no se muestran; distinguir información de showdown y rangos inferidos.

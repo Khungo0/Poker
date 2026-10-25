@@ -1,0 +1,94 @@
+GAME #12543199593 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:32:02/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622374, 1179622373 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: AGGRESSOR (€760.00 in chips)  DEALER
+Seat 6: DEFENDER (€740.00 in chips)
+AGGRESSOR: Post Ante €5.00
+DEFENDER: Post Ante €5.00
+AGGRESSOR: Post SB €15.00
+DEFENDER: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to AGGRESSOR [CQ D3]
+AGGRESSOR: Call €15.00
+DEFENDER: Check
+*** FLOP *** [HJ HQ C3]
+DEFENDER: Check
+AGGRESSOR: Bet €30.00
+DEFENDER: Call €30.00
+*** TURN *** [S2]
+DEFENDER: Check
+AGGRESSOR: Bet €97.00
+DEFENDER: Call €97.00
+*** RIVER *** [D8]
+DEFENDER: Check
+AGGRESSOR: Bet €180.00
+DEFENDER: Call €180.00
+*** SUMMARY ***
+Total pot €684.00 Rake €0.00
+AGGRESSOR: Mucks [CQ D3] Two Pair, Queens and Threes
+DEFENDER: Shows [SQ C8] Two Pair, Queens and Eights
+DEFENDER: wins €684.00
+
+
+
+
+GAME #12547376202 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-02 02:21:43/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179829036, 1179829035 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: DEFENDER (€505.00 in chips)
+Seat 10: AGGRESSOR (€995.00 in chips)  DEALER
+AGGRESSOR: Post Ante €5.00
+DEFENDER: Post Ante €5.00
+AGGRESSOR: Post SB €15.00
+DEFENDER: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to AGGRESSOR [CJ S3]
+AGGRESSOR: Call €15.00
+DEFENDER: Check
+*** FLOP *** [D5 DQ C4]
+DEFENDER: Check
+AGGRESSOR: Bet €30.00
+DEFENDER: Call €30.00
+*** TURN *** [S9]
+DEFENDER: Check
+AGGRESSOR: Bet €97.00
+DEFENDER: Call €97.00
+*** RIVER *** [H7]
+DEFENDER: Check
+AGGRESSOR: Bet €833.00
+DEFENDER: Fold
+*** SUMMARY ***
+Total pot €324.00 Rake €0.00
+AGGRESSOR: Mucks [CJ S3] High Card, Queen
+AGGRESSOR: wins €324.00
+
+
+
+
+GAME #12550808746 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-03 17:15:39/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1180007471, 1180007470 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: DEFENDER (€802.00 in chips)
+Seat 6: AGGRESSOR (€698.00 in chips)  DEALER
+AGGRESSOR: Post SB €10.00
+DEFENDER: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to AGGRESSOR [C4 S2]
+AGGRESSOR: Call €10.00
+DEFENDER: Check
+*** FLOP *** [H5 D3 S9]
+DEFENDER: Check
+AGGRESSOR: Bet €20.00
+DEFENDER: Call €20.00
+*** TURN *** [D8]
+DEFENDER: Check
+AGGRESSOR: Bet €60.00
+DEFENDER: Call €60.00
+*** RIVER *** [H10]
+DEFENDER: Check
+AGGRESSOR: Bet €200.00
+DEFENDER: Raise (NF) €702.00
+AGGRESSOR: Fold
+*** SUMMARY ***
+Total pot €600.00 Rake €0.00
+DEFENDER: wins €600.00

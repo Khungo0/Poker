@@ -74,9 +74,9 @@ def test_import_transaction_duplicates_conflicts_errors(tmp_path):
     before=s.totals();r2=s.import_file(FIXTURE);assert r2['already_imported'] and s.totals()==before
     renamed=tmp_path/'again.txt';renamed.write_bytes(FIXTURE.read_bytes()+b'\n')
     assert s.import_file(renamed)['duplicates']==len(HANDS)
-    changed=tmp_path/'conflict.txt';changed.write_text(HANDS[0].raw.replace('03:28:50','03:28:51'))
+    changed=tmp_path/'conflict.txt';changed.write_text(HANDS[0].raw.replace('03:28:50','03:28:51'), encoding="utf-8")
     assert s.import_file(changed)['conflicts']==1
-    broken=tmp_path/'broken.txt';broken.write_text('not a history');assert s.import_file(broken)['rejected']==1
+    broken=tmp_path/'broken.txt';broken.write_text('not a history', encoding="utf-8");assert s.import_file(broken)['rejected']==1
     assert s.con.execute('SELECT count(*) FROM imports').fetchone()[0]==4
     assert len(list((tmp_path/'imports').glob('*.txt')))==4
     s.close()
