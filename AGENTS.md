@@ -10,3 +10,5 @@
 - Para cualquier sugerencia explotativa añadir baseline claramente identificado, cálculo EV (si existe) y validación por muestras; nunca etiquetar una diferencia estadística como +chipEV sin justificarla.
 - Priorizar tests reproducibles, parser seguro, duplicados y registro de errores; no perder datos importados.
 - Mantener todas las mejoras documentadas en README.md y agregar pruebas.
+
+- Por petición del usuario, continuar por Python y start_windows.bat; no trabajar en EXE, PyInstaller, Inno Setup ni instaladores hasta que cambie esta preferencia. Conservar .venv y compatibilidad de datos al actualizar.

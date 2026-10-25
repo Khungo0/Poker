@@ -1,7 +1,15 @@
-# Spin Population Lab · escritorio 0.5
+# Spin Population Lab · escritorio 0.6
 
 Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
 
+
+## Actualizar y seguir usando Python
+
+Actualiza el código en la misma carpeta, conservando `.venv` y tus datos, y vuelve a abrir **start_windows.bat**. No hay dependencias nuevas ni necesitas reinstalar Python. La base existente es compatible y no hay que reimportar historiales. El empaquetado/instalador está aplazado; no se construye automáticamente al actualizar código.
+
+**Nuevo en 0.6:** 138 reportes (los 79 anteriores más 59 de SRP multiway/river), clasificación con vista previa y aplicación transaccional, comparación Reg/Fish con intervalos y diferencia en puntos porcentuales, consultas del Explorer cancelables en segundo plano y replayer situado antes de la decisión. Clasificación, importación, leaks, estrategias y referencias usan paneles modernos de edición/resultados.
+
+**151 pruebas pasan**. Los 59 reportes nuevos coinciden con un oráculo de historiales originales en 3.384 oportunidades sumadas, sin discrepancias. [Cómo probar y qué falta](docs/ITERATION_06.md).
 
 ## Nuevo: investigación por secuencias
 
@@ -76,7 +84,7 @@ QT_QPA_PLATFORM=offscreen .venv/bin/python -m pytest -q
 
 En este workspace la importación validada está en `data/population-v2.duckdb`. Los tests usan manos reales con nombres sustituidos y escenarios sintéticos identificados en los tests. Nunca se importan los fixtures a una base personal automáticamente.
 
-Para construir Windows: `powershell -ExecutionPolicy Bypass -File packaging/build_windows.ps1`, con Python 3.12 e Inno Setup 6 instalados. Se generan una carpeta portable y un instalador por usuario. El workflow `.github/workflows/windows.yml` ejecuta tests y publica artefactos de CI cuando se ejecuta en GitHub. **No se ha ejecutado todavía un build/instalación Windows en esta sesión Linux.**
+El empaquetado y el instalador quedan aplazados por petición del usuario. Se conservan los scripts históricos, pero el flujo de desarrollo y uso recomendado continúa siendo Python y `start_windows.bat`. El workflow de empaquetado es únicamente manual y no se activa con los pushes.
 
 ## Pendiente antes de considerar el producto terminado
 

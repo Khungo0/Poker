@@ -1,8 +1,6 @@
 name: Windows desktop build
 on:
   workflow_dispatch:
-  push:
-    paths: ['src/**', 'tests/**', 'desktop.py', 'requirements*.txt', 'packaging/**', '.github/workflows/windows.yml']
 permissions:
   contents: read
 jobs:
