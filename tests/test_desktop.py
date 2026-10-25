@@ -13,6 +13,8 @@ def test_desktop_real_data_pages_and_resolutions(tmp_path):
     window.refresh_all()
     window.filters['spot'].setCurrentText('BTN_FIRST');window.refresh_explorer()
     assert window.results.rowCount()>0
+    assert len(window.metric_labels)==3 and int(window.metric_labels[0].text().replace(',',''))>0
+    assert window.sequence_panel.result_tabs.count()==3
     depth=len(window.sequence_panel.history)
     window.dashboard.open_sequence(1)
     for _ in range(500):

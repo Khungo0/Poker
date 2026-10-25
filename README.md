@@ -1,4 +1,4 @@
-# Spin Population Lab · escritorio 0.4
+# Spin Population Lab · escritorio 0.5
 
 Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
 
@@ -20,6 +20,16 @@ En **Poblaciones por rol**, fija por ejemplo A = Reg y B = Fish. Las etiquetas, 
 El constructor permite limitar el tamaño de cada paso en BB o porcentaje de bote, elegir el rol/posición/calle de la siguiente decisión y exigir que exista una subida legal. Las investigaciones antiguas siguen abriendo y la base conserva el esquema 2: esta actualización no regenera ni reimporta datos.
 
 Validación: **124 pruebas pasan**; el contraste independiente de los originales coincide en 15.392 aperturas HU, 743 respuestas a minraise y 765 oportunidades de squeeze 3H de €5. Consulta [ITERATION_04.md](docs/ITERATION_04.md) para los denominadores, límites y fases pendientes. El programa completo sigue en desarrollo.
+
+## Nuevo en 0.5: SRP y escritorio de investigación
+
+Se añaden **52 reportes SRP**, manteniendo los 27 anteriores: **79 reportes** en total. Incluyen cbet, donk, probe, delayed cbet, stabs y segundo/tercer barrel, con oportunidades de apostar y respuestas separadas. HU y 3H conservan sus posiciones y roles. Los desgloses por textura y tamaño enfrentado están en la pestaña **Tamaños y texturas** del explorador de secuencias; la textura también puede filtrarse desde los controles avanzados.
+
+**Population Explorer** usa ahora filtros laterales ajustables, tarjetas de muestra y pestañas de tabla/gráfico. La apariencia nativa Qt se actualiza en todas las vistas. El explorador de secuencias reúne árbol, manos originales y desgloses en pestañas para aprovechar 1920×1080 y 2560×1440.
+
+**142 pruebas pasan**. Los 52 reportes SRP coinciden con una máquina de estados independiente sobre historiales originales (17.315 oportunidades sumadas, cero discrepancias). El tercer barrel limped conserva sus 196 oportunidades verificadas. Consulta [POSTFLOP_SRP.md](docs/POSTFLOP_SRP.md) para las definiciones y [ITERATION_05.md](docs/ITERATION_05.md) para estado y pendientes.
+
+La actualización corrige nueve all-ins que abrían calle y estaban etiquetados como raises: son bets. El análisis sube a versión 3 con backup verificado y regeneración transaccional automática; conserva esquema, manos, etiquetas y estrategias. No necesitas reimportar datos.
 
 ## Abrir en Windows
 

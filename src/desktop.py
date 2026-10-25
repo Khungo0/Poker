@@ -3,7 +3,7 @@ import csv,json
 from pathlib import Path
 from PySide6.QtCore import Qt,QThread,Signal,QEventLoop
 from PySide6.QtGui import QColor,QPainter,QFont
-from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QComboBox,QDoubleSpinBox,QSpinBox,QCheckBox,QTableWidget,QTableWidgetItem,QHeaderView,QFileDialog,QMessageBox,QPlainTextEdit,QLineEdit,QFormLayout,QSplitter,QScrollArea,QProgressDialog)
+from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QPushButton,QListWidget,QStackedWidget,QComboBox,QDoubleSpinBox,QSpinBox,QCheckBox,QTableWidget,QTableWidgetItem,QHeaderView,QFileDialog,QMessageBox,QPlainTextEdit,QLineEdit,QFormLayout,QSplitter,QScrollArea,QProgressDialog,QFrame,QGroupBox,QTabWidget)
 from .store import Store
 from .sequence_ui import SequencePanel
 from .replayer import Replayer
@@ -11,21 +11,8 @@ from .profiles import PROFILES
 from .study_ui import StudyDashboard,SettingsPanel
 from .research import explore,player_profiles,classify,leaks,save_strategy,import_reference,terminal_bet_ev,validate_baseline,selection,FROM
 
-DARK='''
-QToolTip {background:#223249;color:#e8f0fc;border:1px solid #3b526a;padding:6px;}
-QGroupBox {border:1px solid #2b3b4e;border-radius:7px;margin-top:10px;padding:8px;}
-QProgressBar {border:0;background:#1b2a3b;border-radius:4px;max-height:8px;} QProgressBar::chunk {background:#52c8de;}
-QTreeWidget {background:#151f2d;border:1px solid #2b3b4e;border-radius:6px;} QTreeWidget::item {padding:9px;}
-QWidget {background:#111720;color:#dfe6f2;font-family:Segoe UI;font-size:14px;}
-QMainWindow {background:#111720;}
-QLabel#title {font-size:28px;font-weight:700;} QLabel#muted {color:#8d9bb0;}
-QLabel#metric {background:#192231;border-radius:8px;padding:16px;font-size:20px;}
-QListWidget {background:#141c28;border:0;padding:12px;min-width:200px;} QListWidget::item {padding:17px 10px;border-radius:6px;} QListWidget::item:selected {background:#243a48;color:#84dce9;}
-QPushButton {background:#193d50;color:#98e5f2;border:1px solid #306078;border-radius:5px;padding:9px 15px;} QPushButton:hover {background:#24546b;} QPushButton:disabled {color:#657181;}
-QComboBox,QDoubleSpinBox,QLineEdit,QPlainTextEdit {background:#192231;border:1px solid #334054;border-radius:4px;padding:6px;}
-QTableWidget {background:#151d29;alternate-background-color:#192330;gridline-color:#273348;border:1px solid #273348;selection-background-color:#315448;}
-QHeaderView::section {background:#202d3f;color:#9eadc3;padding:8px;border:0;} QScrollArea {border:0;} QSplitter::handle {background:#263346;}
-'''
+from .theme import DARK
+
 
 
 def table():
@@ -82,7 +69,7 @@ class Window(QMainWindow):
     def __init__(self,path=None):
         super().__init__();self.store=Store(path);self.worker=None;self.setWindowTitle('Spin Population Lab · Offline');self.resize(1720,960);self.setMinimumSize(1180,760)
         root=QWidget();self.setCentralWidget(root);layout=QHBoxLayout(root);layout.setContentsMargins(0,0,0,0)
-        side=QWidget();sl=QVBoxLayout(side);logo=QLabel('♠  SPIN LAB');logo.setObjectName('title');sl.addWidget(logo)
+        side=QWidget();side.setObjectName('sidebar');sl=QVBoxLayout(side);logo=QLabel('♠  SPIN LAB');logo.setObjectName('title');sl.addWidget(logo)
         self.nav=QListWidget();self.nav.addItems(['Population Explorer','Importar historiales','Regulares y Fishes','Leak Finder','Strategy Builder','Referencias y EV']);sl.addWidget(self.nav)
         sl.addWidget(QLabel('iPoker / ChampionPoker\nEstudio offline · Datos locales'));side.setMaximumWidth(265);layout.addWidget(side)
         self.stack=QStackedWidget();layout.addWidget(self.stack,1)
@@ -107,24 +94,38 @@ class Window(QMainWindow):
         b=QPushButton(text);b.clicked.connect(lambda:self.safe(fn));layout.addWidget(b);return b
 
     def build_explorer(self):
-        box=self.page('Population Explorer','Decisiones observadas · IC Wilson 95% · Actor y rival se filtran por separado')
-        self.kpis=QLabel();self.kpis.setObjectName('metric');box.addWidget(self.kpis)
+        box=self.page('Population Explorer','Investiga una decisión · contrasta poblaciones · abre las manos que la explican')
+        metrics=QHBoxLayout();self.metric_labels=[]
+        for title in ('OPORTUNIDADES','JUGADORES ÚNICOS','TORNEOS'):
+            card=QFrame();card.setObjectName('metricCard');cv=QVBoxLayout(card)
+            caption=QLabel(title);caption.setObjectName('muted');value=QLabel('0');value.setObjectName('metricValue');cv.addWidget(caption);cv.addWidget(value);metrics.addWidget(card);self.metric_labels.append(value)
+        box.addLayout(metrics);self.kpis=QLabel();self.kpis.hide()
+        workspace=QSplitter(Qt.Horizontal);box.addWidget(workspace,1)
+        filter_scroll=QScrollArea();filter_scroll.setWidgetResizable(True);filter_scroll.setMinimumWidth(300)
+        filters=QWidget();left=QVBoxLayout(filters);left.setContentsMargins(0,0,14,0);filter_scroll.setWidget(filters);workspace.addWidget(filter_scroll)
+        label=QLabel('Selección de población');label.setObjectName('title');left.addWidget(label)
         grid=QGridLayout();self.filters={}
-        for i,(key,title) in enumerate([('spot','Spot'),('population','Actor'),('opponent_population','Rival directo'),('format','Modalidad HU/3H'),('stake','Buy-in total'),('street','Calle'),('position','Posición'),('texture','Textura'),('previous','Acción anterior')]):
-            combo=QComboBox();combo.setMinimumWidth(130);self.filters[key]=combo
-            grid.addWidget(QLabel(title),2*(i//5),i%5);grid.addWidget(combo,2*(i//5)+1,i%5)
-        box.addLayout(grid);self.filters['format'].currentTextChanged.connect(self.explorer_positions)
-        rangebox=QHBoxLayout();self.lo=QDoubleSpinBox();self.hi=QDoubleSpinBox()
+        for i,(key,title) in enumerate([('format','HU / 3H'),('stake','Buy-in'),('population','Actor'),('opponent_population','Rival directo'),('street','Calle'),('position','Posición'),('spot','Decisión / spot'),('texture','Textura'),('previous','Acción anterior')]):
+            combo=QComboBox();combo.setMinimumContentsLength(10);combo.setSizeAdjustPolicy(QComboBox.AdjustToMinimumContentsLengthWithIcon);self.filters[key]=combo
+            row=(i//2)*2;col=i%2;grid.addWidget(QLabel(title),row,col);grid.addWidget(combo,row+1,col)
+        left.addLayout(grid);self.filters['format'].currentTextChanged.connect(self.explorer_positions)
+        group=QGroupBox('Stack y tamaño');ranges=QGridLayout(group);self.lo=QDoubleSpinBox();self.hi=QDoubleSpinBox()
         for spin,val in [(self.lo,0),(self.hi,100)]:spin.setRange(0,1000);spin.setValue(val)
-        rangebox.addWidget(QLabel('Stack efectivo (BB)'));rangebox.addWidget(self.lo);rangebox.addWidget(self.hi)
-        self.extra=QLineEdit('{}');self.extra.hide();rangebox.addWidget(QLabel('Apuesta previa (% bote)'));self.size_lo=QDoubleSpinBox();self.size_hi=QDoubleSpinBox()
-        for spin,val in [(self.size_lo,0),(self.size_hi,1000)]:spin.setRange(0,10000);spin.setValue(val);rangebox.addWidget(spin)
-        self.size_mode=QComboBox();self.size_mode.addItems(['Todos los tamaños','Filtrar apuesta previa']);rangebox.addWidget(self.size_mode)
-        self.button(rangebox,'Investigar',self.refresh_explorer);self.button(rangebox,'Exportar CSV',self.export_csv);box.addLayout(rangebox)
-        advanced=QHBoxLayout();self.path_filter=QLineEdit();self.path_filter.setPlaceholderText('Secuencia exacta opcional, p. ej. 1:BTN:fold > 1:SB:limp');self.path_filter.hide();self.actor_filter=QLineEdit();self.actor_filter.setPlaceholderText('Jugador concreto (opcional)');advanced.addWidget(self.actor_filter);self.include_hero=QCheckBox('Incluir Hero');advanced.addWidget(self.include_hero);box.addLayout(advanced)
-        split=QSplitter(Qt.Vertical);self.results=table();self.chart=Bars();split.addWidget(self.results);split.addWidget(self.chart);box.addWidget(split,1)
-        self.notice=QLabel('');self.notice.setWordWrap(True);box.addWidget(self.notice)
-        buttons=QHBoxLayout();self.button(buttons,'Inspeccionar manos del spot',self.inspect_hands);self.button(buttons,'Matriz de cartas observadas',self.show_range);box.addLayout(buttons)
+        ranges.addWidget(QLabel('Efectivo · BB'),0,0,1,2);ranges.addWidget(self.lo,1,0);ranges.addWidget(self.hi,1,1)
+        self.size_mode=QComboBox();self.size_mode.addItems(['Todos los tamaños','Apuesta previa · % bote']);ranges.addWidget(self.size_mode,2,0,1,2)
+        self.size_lo=QDoubleSpinBox();self.size_hi=QDoubleSpinBox()
+        for spin,val in [(self.size_lo,0),(self.size_hi,1000)]:spin.setRange(0,10000);spin.setValue(val)
+        ranges.addWidget(self.size_lo,3,0);ranges.addWidget(self.size_hi,3,1);left.addWidget(group)
+        self.extra=QLineEdit('{}');self.extra.hide();self.path_filter=QLineEdit();self.path_filter.hide()
+        self.actor_filter=QLineEdit();self.actor_filter.setPlaceholderText('Jugador concreto');left.addWidget(self.actor_filter)
+        self.include_hero=QCheckBox('Incluir Hero');left.addWidget(self.include_hero)
+        run=self.button(left,'Investigar población',self.refresh_explorer);run.setObjectName('primary')
+        self.button(left,'Exportar resultados CSV',self.export_csv);left.addStretch()
+        right=QWidget();rv=QVBoxLayout(right);rv.setContentsMargins(12,0,0,0);workspace.addWidget(right)
+        self.results=table();self.chart=Bars();tabs=QTabWidget();tabs.addTab(self.results,'Frecuencias e intervalos');tabs.addTab(self.chart,'Gráfico de acciones');rv.addWidget(tabs,1)
+        buttons=QHBoxLayout();self.button(buttons,'Abrir manos',self.inspect_hands);self.button(buttons,'Cartas reveladas',self.show_range);rv.addLayout(buttons)
+        self.notice=QLabel();self.notice.setWordWrap(True);self.notice.setObjectName('muted');rv.addWidget(self.notice)
+        workspace.setSizes([340,1100]);workspace.setStretchFactor(1,1)
 
     def explorer_positions(self,format_):
         c=self.filters['position'];old=c.currentText();c.clear();c.addItems(['Todos','SB','BB']+([] if format_=='HU' else ['BTN']))
@@ -143,6 +144,7 @@ class Window(QMainWindow):
     def refresh_explorer(self):
         totals,rows=explore(self.store,self.current_filters());self.last_rows=rows;fill(self.results,rows);self.chart.rows=rows;self.chart.update()
         self.kpis.setText(f"{totals['opportunities']:,} oportunidades     ·     {totals['players']:,} jugadores     ·     {totals['tournaments']:,} torneos")
+        for label,key in zip(self.metric_labels,('opportunities','players','tournaments')):label.setText(f'{totals[key]:,}')
         share=totals['largest_player_share']
         self.notice.setText(f"Mayor contribución de un jugador: {share:.1%}. " if share is not None else 'Sin muestra. ')
         self.notice.setText(self.notice.text()+'Los IC no corrigen la dependencia entre manos del mismo jugador ni búsquedas múltiples. Una frecuencia no demuestra EV. Tamaño propio condiciona al resultado; usa facing_pct para estudiar respuestas. En spots multiway sin agresor no se asigna un rival único.')

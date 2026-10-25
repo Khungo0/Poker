@@ -1,11 +1,13 @@
-# Estado y continuación · iteración 0.4
+# Estado y continuación · iteración 0.5
 
 ## Objetivo
 Analizador offline de tendencias poblacionales de Spins iPoker/ChampionPoker, especialmente €5, con Reg/Fish, HU/3H y estudio explotativo. Windows: 1440×900, 1920×1080 y 2560×1440. Consultar AGENTS.md, README.md, docs/DATA_MODEL.md y docs/VALIDATION.md antes de cambiar semánticas.
 
 Leer primero docs/ITERATION_04.md, docs/ITERATION_03.md y docs/PRODUCT_REQUEST.md. Motor de secuencias, migración 1→2, preset third barrel limped, nuevo replayer/panel y comparación por ramas ya están implementados. La iteración 0.4 añade restricciones por rol persistente y 27 reportes (src/presets.py), con oráculo preflop independiente y 124 pruebas. Continuar sobre estos componentes; conservar sus regresiones y consultar los límites pendientes antes de afirmar una fase terminada.
 
-Siguiente tarea de desarrollo de la fase 2: ampliar presets postflop SRP (cbet/donk/probe/delayed cbet) con oportunidades bet/check y respuesta fold/call/raise separadas, para HU y 3H, contrastándolos contra acciones originales. Conservar roles, elegibilidad y formato de la mano cuando un tercero foldea. Después ampliar texturas y distribuciones de tamaño en los reportes. No crear nuevas etiquetas ni baselines para aparentar muestra.
+La iteración 0.5 añade 52 reportes SRP (79 en total), oráculo de acciones originales sin discrepancias, 36 fixtures reales adicionales y 142 pruebas. Leer docs/POSTFLOP_SRP.md y docs/ITERATION_05.md. El esquema sigue en 2, pero análisis 3 corrige apuestas all-in que abrían calle; Store regenera automáticamente con backup y rollback. No repetir esta migración manualmente.
+
+Siguiente tarea de fase 2: SRP multiway con tres jugadores postflop y líneas river stab/missed cbet adicionales, con oráculo independiente y roles. Fase 3: continuar el rediseño del resto de módulos y virtualizar/ejecutar consultas del Population Explorer en worker; el Explorer ya tiene filtros laterales y tarjetas, y las secuencias tienen pestañas de árbol/manos/desgloses. Mantener los 79 reportes existentes.
 
 ## Base de la iteración anterior
 - Parser del TXT real y resúmenes, antes/all-in, cartas desconocidas, contabilidad entera y validación de acciones/bote.

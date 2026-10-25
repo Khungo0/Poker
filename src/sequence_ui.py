@@ -2,7 +2,7 @@
 import json
 from dataclasses import replace
 from PySide6.QtCore import Qt,QThread,Signal
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QComboBox,QPushButton,QDoubleSpinBox,QCheckBox,QLineEdit,QTreeWidget,QTreeWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QGroupBox,QScrollArea,QProgressBar,QFileDialog,QMessageBox
+from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QComboBox,QPushButton,QDoubleSpinBox,QCheckBox,QLineEdit,QTreeWidget,QTreeWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QGroupBox,QScrollArea,QProgressBar,QFileDialog,QMessageBox,QTabWidget
 from .sequences import Pattern,Step,RoleFilter,limped_barrels,sequence_report,describe
 from .presets import PRESETS
 from .store import Store
@@ -65,7 +65,7 @@ class SequencePanel(QWidget):
         self.low=QDoubleSpinBox();self.high=QDoubleSpinBox()
         for spin,val in [(self.low,0),(self.high,100)]:spin.setRange(0,1000);spin.setValue(val);quick.addWidget(spin)
         self.stack_preset.currentIndexChanged.connect(self.set_stack);self.hero=QCheckBox('Incluir Hero');quick.addWidget(self.hero)
-        self.run_button=QPushButton('Investigar secuencia');self.run_button.clicked.connect(self.run);quick.addWidget(self.run_button,1)
+        self.run_button=QPushButton('Investigar secuencia');self.run_button.setObjectName('primary');self.run_button.clicked.connect(self.run);quick.addWidget(self.run_button,1)
         self.cancel=QPushButton('Cancelar');self.cancel.clicked.connect(self.cancel_query);self.cancel.setEnabled(False);quick.addWidget(self.cancel);v.addLayout(quick)
         self.advanced=QGroupBox('Constructor visual y filtros avanzados');self.advanced.setCheckable(True);self.advanced.setChecked(False);av=QVBoxLayout(self.advanced);self.controls=QWidget();controls=QVBoxLayout(self.controls);self.controls.hide();self.advanced.toggled.connect(self.controls.setVisible);av.addWidget(self.controls);v.addWidget(self.advanced)
         line=QHBoxLayout();self.street=QComboBox();self.street.addItems(STREETS);self.role=QComboBox();self.role.addItems(['Sin rol','A','B','C']);self.action=QComboBox();self.action.addItems(ACTION_NAMES);self.position=QComboBox();self.position.addItems(['Cualquiera','SB','BB','BTN']);self.optional=QCheckBox('Opcional');self.exclude=QCheckBox('Excluir acción')
@@ -84,10 +84,11 @@ class SequencePanel(QWidget):
         sprline=QHBoxLayout();self.spr_enabled=QCheckBox('Filtrar SPR al inicio de la calle');sprline.addWidget(self.spr_enabled);self.spr_low=QDoubleSpinBox();self.spr_high=QDoubleSpinBox()
         for spin,value in [(self.spr_low,0),(self.spr_high,100)]:spin.setRange(0,10000);spin.setValue(value);sprline.addWidget(spin)
         self.active=QComboBox();self.active.addItems(['Todos','2','3']);sprline.addWidget(QLabel('Jugadores activos'));sprline.addWidget(self.active);controls.addLayout(sprline)
+        textures=QHBoxLayout();textures.addWidget(QLabel('Textura del board'));self.filters['texture']=QComboBox();self.filters['texture'].addItems(['Todos']+[r[0] for r in store.con.execute("SELECT DISTINCT texture FROM observations WHERE street>1 ORDER BY texture").fetchall()]);textures.addWidget(self.filters['texture'],1);controls.addLayout(textures)
         self.description=QLabel();self.description.setWordWrap(True);self.description.setObjectName('muted');v.addWidget(self.description)
         self.progress=QProgressBar();self.progress.hide();v.addWidget(self.progress);self.kpis=QLabel('Selecciona un preset y pulsa Investigar.');self.kpis.setObjectName('metric');v.addWidget(self.kpis)
-        self.tree=QTreeWidget();self.tree.setHeaderLabels(['Siguiente acción','Casos / oportunidades','Frecuencia · IC95','Por jugador','Reg','Fish']);self.tree.header().setSectionResizeMode(QHeaderView.ResizeToContents);self.tree.header().setStretchLastSection(True);self.tree.itemDoubleClicked.connect(self.follow);v.addWidget(self.tree,2)
-        self.hands=QTableWidget();self.hands.setEditTriggers(QTableWidget.NoEditTriggers);self.hands.setAlternatingRowColors(True);self.hands.cellDoubleClicked.connect(self.open_hand);v.addWidget(self.hands,1)
+        self.tree=QTreeWidget();self.tree.setHeaderLabels(['Siguiente acción','Casos / oportunidades','Frecuencia · IC95','Por jugador','Reg','Fish']);self.tree.header().setSectionResizeMode(QHeaderView.ResizeToContents);self.tree.header().setStretchLastSection(True);self.tree.itemDoubleClicked.connect(self.follow);self.result_tabs=QTabWidget();self.result_tabs.addTab(self.tree,'Árbol de decisiones');v.addWidget(self.result_tabs,2)
+        self.hands=QTableWidget();self.hands.setEditTriggers(QTableWidget.NoEditTriggers);self.hands.setAlternatingRowColors(True);self.hands.cellDoubleClicked.connect(self.open_hand);self.result_tabs.addTab(self.hands,'Manos originales');self.breakdowns=QTableWidget();self.breakdowns.setEditTriggers(QTableWidget.NoEditTriggers);self.breakdowns.setAlternatingRowColors(True);self.result_tabs.addTab(self.breakdowns,'Tamaños y texturas')
         self.notice=QLabel('Las categorías proceden de tus etiquetas. Sin etiquetas Fish no se generan estadísticas Fish.');self.notice.setWordWrap(True);v.addWidget(self.notice)
         foot=QHBoxLayout();self.saved=QComboBox();foot.addWidget(self.saved,1);load=QPushButton('Abrir investigación');load.clicked.connect(self.load_saved);foot.addWidget(load);export=QPushButton('Exportar investigación');export.clicked.connect(self.export);foot.addWidget(export);v.addLayout(foot)
         self.refresh_saved();self.describe();self.positions(self.filters['format'].currentText())
@@ -156,7 +157,7 @@ class SequencePanel(QWidget):
     def show_error(self,error):self.notice.setText(error)
     def show_report(self,result):
         if self.pattern!=result.get('pattern') or self.current_filters()!=result.get('filters'):
-            self.last=None;self.tree.clear();self.hands.setRowCount(0);self.kpis.setText('Filtros modificados');self.notice.setText('La consulta terminó con filtros anteriores. Pulsa Investigar para consultar la selección actual.');return
+            self.last=None;self.tree.clear();self.hands.setRowCount(0);self.breakdowns.setRowCount(0);self.kpis.setText('Filtros modificados');self.notice.setText('La consulta terminó con filtros anteriores. Pulsa Investigar para consultar la selección actual.');return
         self.last=result;report=result['report'];self.kpis.setText(f"{report['opportunities']:,} oportunidades  ·  {report['players']:,} jugadores  ·  llegada {report['reached_hands']:,}/{report['root_hands']:,} manos")
         self.tree.clear()
         for row in report['rows']:
@@ -164,6 +165,11 @@ class SequencePanel(QWidget):
             for cat in ('Reg','Fish'):
                 r=next((r for r in result['comparison'][cat] if r['result']==row['result'] and r['street']==row['street']),None);compare.append(f"{r['frequency']:.1%} · n={r['opportunities']}" if r else 'Sin muestra')
             item=QTreeWidgetItem([f"{row['street']} · {ACTION_NAMES[row['result']]}",f"{row['cases']} / {row['opportunities']}",f"{row['frequency']:.1%} [{row['ci_low']:.1%}, {row['ci_high']:.1%}]",f"{row['player_weighted']:.1%}",*compare]);item.setData(0,Qt.UserRole,row);self.tree.addTopLevelItem(item)
+        strata=report.get('breakdowns',[]);keys=['dimension','value','result','cases','opportunities','frequency','ci_low','ci_high']
+        self.breakdowns.setColumnCount(len(keys));self.breakdowns.setHorizontalHeaderLabels(['Desglose','Grupo','Acción','Casos','Oportunidades','Frecuencia','IC95 inferior','IC95 superior']);self.breakdowns.setRowCount(len(strata))
+        for i,r in enumerate(strata):
+            for j,key in enumerate(keys):self.breakdowns.setItem(i,j,QTableWidgetItem(f'{r[key]:.1%}' if isinstance(r[key],float) else str(r[key])))
+        self.breakdowns.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         samples=report['samples'];keys=['hand_id','actor','opponent','position','result','facing_pct','street_eff_bb','spr','board'];self.hands.setColumnCount(len(keys));self.hands.setHorizontalHeaderLabels(['Mano','Actor','Rival','Posición','Acción','Apuesta anunciada / bote','Stack calle BB','SPR','Board']);self.hands.setRowCount(len(samples))
         for i,r in enumerate(samples):
             for j,key in enumerate(keys):self.hands.setItem(i,j,QTableWidgetItem(f'{r[key]:.3f}' if isinstance(r[key],float) else str(r[key])))

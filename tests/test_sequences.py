@@ -136,6 +136,7 @@ def test_visual_builder_worker_and_saved_filters(tmp_path):
         app.processEvents();QTest.qWait(10)
         if panel.worker and not panel.worker.isRunning():break
     app.processEvents();assert panel.last and panel.last['report']['opportunities']==1
+    assert panel.breakdowns.rowCount()>0
     assert panel.date_from.text()=='2026-10-01' and panel.low.value()==0 and panel.size_enabled.isChecked()
     for width,height in [(1440,900),(1920,1080),(2560,1440)]:panel.resize(width,height);panel.show();app.processEvents();assert panel.width()==width
     panel.open_hand(0,0);app.processEvents();assert len(panel.replayer.frames)>5;panel.replayer.close();panel.pattern=Pattern();panel.street.setCurrentText('Flop');panel.action.setCurrentText('bet');panel.add_step();assert sequence_report(s,panel.pattern,{})['opportunities']==1;panel.close();s.close()

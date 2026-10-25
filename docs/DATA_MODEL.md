@@ -17,7 +17,7 @@ Los adjuntos contienen un exportador de historiales iPoker en texto (`GAME #…`
 
 DuckDB contiene `hands`, `observations`, `summaries`, `imports`, `errors`, `labels`, `documents` y `metadata`. Los originales completos también se archivan en `imports/` junto a la BD, por SHA-256. La importación es transaccional por archivo. Una mano se identifica por red + game ID, independientemente del nombre del archivo. Un mismo ID con contenido diferente se registra como conflicto y no reemplaza el original. Los resúmenes no generan oportunidades.
 
-`rebuild` regenera las observaciones derivadas desde los textos originales en una transacción y mantiene etiquetas y estrategias. El esquema actual es 2; desde la versión 0.3 la migración 1→2 y el rebuild crean un backup verificado antes de modificar datos. Conservar también **la carpeta completa de datos**, incluido `imports/`. La base SQLite del prototipo se conserva por separado; no se migra automáticamente. La versión 0.4 conserva esquema y observaciones existentes.
+`rebuild` regenera las observaciones derivadas desde los textos originales en una transacción y mantiene etiquetas y estrategias. El esquema actual es 2; desde la versión 0.3 la migración 1→2 y el rebuild crean un backup verificado antes de modificar datos. Conservar también **la carpeta completa de datos**, incluido `imports/`. La base SQLite del prototipo se conserva por separado; no se migra automáticamente. La versión 0.5 conserva esquema 2; análisis 3 corrige aperturas postflop all-in/raise-to a bet y regenera transaccionalmente con backup al abrir un análisis anterior. Ver POSTFLOP_SRP.md.
 
 ## Oportunidades
 
