@@ -1,0 +1,1046 @@
+GAME #12543201521 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:28:50/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622359, 1179622358 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€500.00 in chips)
+Seat 6: P_843c8777e9 (€500.00 in chips)  DEALER
+Seat 10: P_7bb39102d4 (€500.00 in chips)
+P_7bb39102d4: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [DJ CK]
+P_843c8777e9: Raise (NF) €80.00
+P_7bb39102d4: Fold
+P_6ad23bad39: Call €60.00
+*** FLOP *** [D5 D8 S2]
+P_6ad23bad39: Check
+P_843c8777e9: Bet €170.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €170.00 Rake €0.00
+P_843c8777e9: wins €170.00
+
+GAME #12543201556 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:07/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622359, 1179622358 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€420.00 in chips)
+Seat 6: P_843c8777e9 (€590.00 in chips)
+Seat 10: P_7bb39102d4 (€490.00 in chips)  DEALER
+P_6ad23bad39: Post SB €10.00
+P_843c8777e9: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C2 SQ]
+P_7bb39102d4: Raise (NF) €40.00
+P_6ad23bad39: Fold
+P_843c8777e9: Call €20.00
+*** FLOP *** [H4 C3 C7]
+P_843c8777e9: Check
+P_7bb39102d4: Check
+*** TURN *** [C5]
+P_843c8777e9: Bet €45.00
+P_7bb39102d4: Call €45.00
+*** RIVER *** [CA]
+P_843c8777e9: Bet €90.00
+P_7bb39102d4: Call €90.00
+*** SUMMARY ***
+Total pot €360.00 Rake €0.00
+P_843c8777e9: Shows [C8 H9] Flush, Ace High
+P_7bb39102d4: Shows [D6 C6] Flush, Ace High
+P_843c8777e9: wins €360.00
+
+GAME #12543201630 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:46/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622359, 1179622358 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€410.00 in chips)  DEALER
+Seat 6: P_843c8777e9 (€775.00 in chips)
+Seat 10: P_7bb39102d4 (€315.00 in chips)
+P_843c8777e9: Post SB €10.00
+P_7bb39102d4: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D9 H7]
+P_6ad23bad39: Fold
+P_843c8777e9: Call €10.00
+P_7bb39102d4: Check
+*** FLOP *** [HJ S9 S10]
+P_843c8777e9: Bet €20.00
+P_7bb39102d4: Fold
+*** SUMMARY ***
+Total pot €40.00 Rake €0.00
+P_843c8777e9: wins €40.00
+
+GAME #12543201669 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:30:04/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622359, 1179622358 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€410.00 in chips)
+Seat 6: P_843c8777e9 (€795.00 in chips)  DEALER
+Seat 10: P_7bb39102d4 (€295.00 in chips)
+P_7bb39102d4: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [SA S6]
+P_843c8777e9: Call €20.00
+P_7bb39102d4: Raise (NF) €295.00
+P_6ad23bad39: Fold
+P_843c8777e9: Call €275.00
+*** FLOP *** [H2 H5 D5]
+*** TURN *** [C3]
+*** RIVER *** [C8]
+*** SUMMARY ***
+Total pot €610.00 Rake €0.00
+P_843c8777e9: Shows [D3 D4] Two Pair, Fives and Threes
+P_7bb39102d4: Shows [H8 HA] Two Pair, Eights and Fives
+P_7bb39102d4: wins €610.00
+
+GAME #12543201717 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:30:24/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622359, 1179622358 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€390.00 in chips)
+Seat 6: P_843c8777e9 (€500.00 in chips)
+Seat 10: P_7bb39102d4 (€610.00 in chips)  DEALER
+P_6ad23bad39: Post SB €10.00
+P_843c8777e9: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C9 SK]
+P_7bb39102d4: Fold
+P_6ad23bad39: Raise (NF) €40.00
+P_843c8777e9: Call €20.00
+*** FLOP *** [HA C6 C5]
+P_6ad23bad39: Bet €20.00
+P_843c8777e9: Call €20.00
+*** TURN *** [S2]
+P_6ad23bad39: Bet €80.00
+P_843c8777e9: Call €80.00
+*** RIVER *** [C2]
+P_6ad23bad39: Bet €250.00
+P_843c8777e9: Call €250.00
+*** SUMMARY ***
+Total pot €780.00 Rake €0.00
+P_6ad23bad39: Mucks [C9 SK] One Pair, Twos
+P_843c8777e9: Shows [S9 D2] Three of a Kind, Twos
+P_843c8777e9: wins €780.00
+
+GAME #12543199205 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:28:32/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€500.00 in chips)
+Seat 6: P_c7c6a9c074 (€500.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€500.00 in chips)
+P_6ad23bad39: Post SB €10.00
+P_e6d0f88aee: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C5 H8]
+P_c7c6a9c074: Fold
+P_6ad23bad39: Raise (NF) €60.00
+P_e6d0f88aee: Call €40.00
+*** FLOP *** [SJ CQ S10]
+P_6ad23bad39: Bet €39.00
+P_e6d0f88aee: Call €39.00
+*** TURN *** [S8]
+P_6ad23bad39: Check
+P_e6d0f88aee: Bet €20.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €198.00 Rake €0.00
+P_e6d0f88aee: wins €198.00
+
+GAME #12543199266 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:09/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€599.00 in chips)
+Seat 6: P_c7c6a9c074 (€500.00 in chips)
+Seat 10: P_6ad23bad39 (€401.00 in chips)  DEALER
+P_e6d0f88aee: Post SB €10.00
+P_c7c6a9c074: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S6 DA]
+P_6ad23bad39: Raise (NF) €401.00
+P_e6d0f88aee: Fold
+P_c7c6a9c074: Fold
+*** SUMMARY ***
+Total pot €50.00 Rake €0.00
+P_6ad23bad39: Mucks [S6 DA]
+P_6ad23bad39: wins €50.00
+
+GAME #12543199293 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:24/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€589.00 in chips)  DEALER
+Seat 6: P_c7c6a9c074 (€480.00 in chips)
+Seat 10: P_6ad23bad39 (€431.00 in chips)
+P_c7c6a9c074: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [H10 S2]
+P_e6d0f88aee: Call €20.00
+P_c7c6a9c074: Call €10.00
+P_6ad23bad39: Check
+*** FLOP *** [S10 DQ D10]
+P_c7c6a9c074: Check
+P_6ad23bad39: Bet €30.00
+P_e6d0f88aee: Raise (NF) €150.00
+P_c7c6a9c074: Fold
+P_6ad23bad39: Raise (NF) €411.00
+P_e6d0f88aee: Call €261.00
+*** TURN *** [S3]
+*** RIVER *** [D7]
+*** SUMMARY ***
+Total pot €882.00 Rake €0.00
+P_e6d0f88aee: Shows [SQ CK] Two Pair, Queens and Tens
+P_6ad23bad39: Shows [H10 S2] Three of a Kind, Tens
+P_6ad23bad39: wins €882.00
+
+GAME #12543199410 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:30:27/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€158.00 in chips)
+Seat 6: P_c7c6a9c074 (€460.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€882.00 in chips)
+P_6ad23bad39: Post SB €10.00
+P_e6d0f88aee: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [SK C6]
+P_c7c6a9c074: Raise (NF) €40.00
+P_6ad23bad39: Fold
+P_e6d0f88aee: Fold
+*** SUMMARY ***
+Total pot €50.00 Rake €0.00
+P_c7c6a9c074: wins €50.00
+
+GAME #12543199443 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:30:45/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€138.00 in chips)
+Seat 6: P_c7c6a9c074 (€490.00 in chips)
+Seat 10: P_6ad23bad39 (€872.00 in chips)  DEALER
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post SB €15.00
+P_c7c6a9c074: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [HK D9]
+P_6ad23bad39: Raise (NF) €60.00
+P_e6d0f88aee: Fold
+P_c7c6a9c074: Call €30.00
+*** FLOP *** [D8 C10 DQ]
+P_c7c6a9c074: Check
+P_6ad23bad39: Bet €38.00
+P_c7c6a9c074: Fold
+*** SUMMARY ***
+Total pot €150.00 Rake €0.00
+P_6ad23bad39: Mucks [HK D9]
+P_6ad23bad39: wins €150.00
+
+GAME #12543199506 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:31:19/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€118.00 in chips)  DEALER
+Seat 6: P_c7c6a9c074 (€425.00 in chips)
+Seat 10: P_6ad23bad39 (€957.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post SB €15.00
+P_6ad23bad39: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [H3 D4]
+P_e6d0f88aee: Raise (NF) €113.00
+P_c7c6a9c074: Fold
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €90.00 Rake €0.00
+P_e6d0f88aee: wins €90.00
+
+GAME #12543199542 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:31:38/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€173.00 in chips)
+Seat 6: P_c7c6a9c074 (€405.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€922.00 in chips)
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €15.00
+P_e6d0f88aee: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D9 H5]
+P_c7c6a9c074: Fold
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €45.00 Rake €0.00
+P_e6d0f88aee: wins €45.00
+
+GAME #12543199582 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:31:57/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€178.00 in chips)  DEALER
+Seat 6: P_c7c6a9c074 (€425.00 in chips)
+Seat 10: P_6ad23bad39 (€897.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post SB €15.00
+P_6ad23bad39: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [HQ D5]
+P_e6d0f88aee: Fold
+P_c7c6a9c074: Call €15.00
+P_6ad23bad39: Check
+*** FLOP *** [S8 D8 C10]
+P_c7c6a9c074: Check
+P_6ad23bad39: Check
+*** TURN *** [S9]
+P_c7c6a9c074: Check
+P_6ad23bad39: Check
+*** RIVER *** [H3]
+P_c7c6a9c074: Check
+P_6ad23bad39: Check
+*** SUMMARY ***
+Total pot €75.00 Rake €0.00
+P_c7c6a9c074: Shows [CQ S5] One Pair, Eights
+P_6ad23bad39: Shows [HQ D5] One Pair, Eights
+P_c7c6a9c074: wins €38.00
+P_6ad23bad39: wins €37.00
+
+GAME #12543199664 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:32:44/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€173.00 in chips)
+Seat 6: P_c7c6a9c074 (€428.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€899.00 in chips)
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €20.00
+P_e6d0f88aee: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [HK H6]
+P_c7c6a9c074: Raise (NF) €423.00
+P_6ad23bad39: Fold
+P_e6d0f88aee: Allin €128.00
+*** FLOP *** [C8 DQ S6]
+*** TURN *** [S5]
+*** RIVER *** [S4]
+*** SUMMARY ***
+Total pot €371.00 Rake €0.00
+P_e6d0f88aee: Shows [H3 D3] One Pair, Threes
+P_c7c6a9c074: Shows [DA C3] High Card, Ace
+P_e6d0f88aee: wins €371.00
+
+GAME #12543199700 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:33:03/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€371.00 in chips)
+Seat 6: P_c7c6a9c074 (€255.00 in chips)
+Seat 10: P_6ad23bad39 (€874.00 in chips)  DEALER
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post SB €20.00
+P_c7c6a9c074: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CQ S7]
+P_6ad23bad39: Fold
+P_e6d0f88aee: Fold
+*** SUMMARY ***
+Total pot €55.00 Rake €0.00
+P_c7c6a9c074: wins €55.00
+
+GAME #12543199722 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:33:16/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€346.00 in chips)  DEALER
+Seat 6: P_c7c6a9c074 (€285.00 in chips)
+Seat 10: P_6ad23bad39 (€869.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post SB €20.00
+P_6ad23bad39: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [DQ H6]
+P_e6d0f88aee: Fold
+P_c7c6a9c074: Raise (NF) €280.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €95.00 Rake €0.00
+P_c7c6a9c074: wins €95.00
+
+GAME #12543199739 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:33:28/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€341.00 in chips)
+Seat 6: P_c7c6a9c074 (€335.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€824.00 in chips)
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €20.00
+P_e6d0f88aee: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S10 D2]
+P_c7c6a9c074: Fold
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €55.00 Rake €0.00
+P_e6d0f88aee: wins €55.00
+
+GAME #12543199766 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:33:44/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€371.00 in chips)
+Seat 6: P_c7c6a9c074 (€330.00 in chips)
+Seat 10: P_6ad23bad39 (€799.00 in chips)  DEALER
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post SB €20.00
+P_c7c6a9c074: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D9 H2]
+P_6ad23bad39: Fold
+P_e6d0f88aee: Fold
+*** SUMMARY ***
+Total pot €55.00 Rake €0.00
+P_c7c6a9c074: wins €55.00
+
+GAME #12543199813 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:34:05/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_e6d0f88aee (€346.00 in chips)  DEALER
+Seat 6: P_c7c6a9c074 (€360.00 in chips)
+Seat 10: P_6ad23bad39 (€794.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_e6d0f88aee: Post Ante €5.00
+P_c7c6a9c074: Post SB €20.00
+P_6ad23bad39: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D10 DJ]
+P_e6d0f88aee: Raise (NF) €80.00
+P_c7c6a9c074: Fold
+P_6ad23bad39: Call €40.00
+*** FLOP *** [D2 C5 H10]
+P_6ad23bad39: Check
+P_e6d0f88aee: Bet €195.00
+P_6ad23bad39: Raise (NF) €709.00
+P_e6d0f88aee: Allin €66.00
+*** TURN *** [DK]
+*** RIVER *** [D7]
+*** SUMMARY ***
+Total pot €717.00 Rake €0.00
+P_e6d0f88aee: Shows [SQ CK] One Pair, Kings
+P_6ad23bad39: Shows [D10 DJ] Flush, King High
+P_6ad23bad39: wins €717.00
+
+GAME #12543199885 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:34:42/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€335.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€1,165.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post SB €30.00
+P_6ad23bad39: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C6 HJ]
+P_c7c6a9c074: Fold
+*** SUMMARY ***
+Total pot €70.00 Rake €0.00
+P_6ad23bad39: Mucks [C6 HJ]
+P_6ad23bad39: wins €70.00
+
+GAME #12543199897 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:34:50/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€300.00 in chips)
+Seat 10: P_6ad23bad39 (€1,200.00 in chips)  DEALER
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €30.00
+P_c7c6a9c074: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D3 CJ]
+P_6ad23bad39: Raise (NF) €1,195.00
+P_c7c6a9c074: Allin €235.00
+*** FLOP *** [C10 C8 H6]
+*** TURN *** [C3]
+*** RIVER *** [HK]
+*** SUMMARY ***
+Total pot €600.00 Rake €0.00
+P_c7c6a9c074: Shows [D6 D7] One Pair, Sixes
+P_6ad23bad39: Mucks [D3 CJ] One Pair, Threes
+P_c7c6a9c074: wins €600.00
+
+GAME #12543199937 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:35:10/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€600.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€900.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post SB €30.00
+P_6ad23bad39: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CQ C9]
+P_c7c6a9c074: Raise (NF) €595.00
+P_6ad23bad39: Call €535.00
+*** FLOP *** [CJ D8 S8]
+*** TURN *** [D7]
+*** RIVER *** [HK]
+*** SUMMARY ***
+Total pot €1,200.00 Rake €0.00
+P_c7c6a9c074: Shows [H9 SA] One Pair, Eights
+P_6ad23bad39: Mucks [CQ C9] One Pair, Eights
+P_c7c6a9c074: wins €1,200.00
+
+GAME #12543199966 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:35:27/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€1,200.00 in chips)
+Seat 10: P_6ad23bad39 (€300.00 in chips)  DEALER
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €30.00
+P_c7c6a9c074: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CQ H9]
+P_6ad23bad39: Raise (NF) €295.00
+P_c7c6a9c074: Fold
+*** SUMMARY ***
+Total pot €130.00 Rake €0.00
+P_6ad23bad39: Mucks [CQ H9]
+P_6ad23bad39: wins €130.00
+
+GAME #12543199980 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:35:35/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€1,135.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€365.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post SB €30.00
+P_6ad23bad39: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [SJ D3]
+P_c7c6a9c074: Raise (NF) €1,130.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €130.00 Rake €0.00
+P_c7c6a9c074: wins €130.00
+
+GAME #12543199988 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:35:42/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€1,200.00 in chips)
+Seat 10: P_6ad23bad39 (€300.00 in chips)  DEALER
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post SB €30.00
+P_c7c6a9c074: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C2 D7]
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €70.00 Rake €0.00
+P_c7c6a9c074: wins €70.00
+
+GAME #12543200002 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:35:49/GMT
+Table Info: Size: 3, Blinds: 30/60, Ante: 5
+Table Twister €5 SNG, 1179622339, 1179622338 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_c7c6a9c074 (€1,235.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€265.00 in chips)
+P_c7c6a9c074: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_c7c6a9c074: Post SB €30.00
+P_6ad23bad39: Post BB €60.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [DQ HJ]
+P_c7c6a9c074: Raise (NF) €1,230.00
+P_6ad23bad39: Allin €200.00
+*** FLOP *** [C4 D8 D10]
+*** TURN *** [H4]
+*** RIVER *** [H5]
+*** SUMMARY ***
+Total pot €530.00 Rake €0.00
+P_c7c6a9c074: Shows [CK C5] Two Pair, Fives and Fours
+P_6ad23bad39: Mucks [DQ HJ] One Pair, Fours
+P_c7c6a9c074: wins €530.00
+
+GAME #12543199252 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:02/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622374, 1179622373 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€500.00 in chips)
+Seat 6: P_e9708c95bd (€500.00 in chips)  DEALER
+Seat 10: P_865b92dbff (€500.00 in chips)
+P_865b92dbff: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [H2 DA]
+P_e9708c95bd: Fold
+P_865b92dbff: Fold
+*** SUMMARY ***
+Total pot €20.00 Rake €0.00
+P_6ad23bad39: Mucks [H2 DA]
+P_6ad23bad39: wins €20.00
+
+GAME #12543199268 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:10/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622374, 1179622373 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€510.00 in chips)
+Seat 6: P_e9708c95bd (€500.00 in chips)
+Seat 10: P_865b92dbff (€490.00 in chips)  DEALER
+P_6ad23bad39: Post SB €10.00
+P_e9708c95bd: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [HA H10]
+P_865b92dbff: Raise (NF) €40.00
+P_6ad23bad39: Raise (NF) €510.00
+P_e9708c95bd: Fold
+P_865b92dbff: Fold
+*** SUMMARY ***
+Total pot €100.00 Rake €0.00
+P_6ad23bad39: Mucks [HA H10]
+P_6ad23bad39: wins €100.00
+
+GAME #12543199287 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:20/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622374, 1179622373 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€570.00 in chips)  DEALER
+Seat 6: P_e9708c95bd (€480.00 in chips)
+Seat 10: P_865b92dbff (€450.00 in chips)
+P_e9708c95bd: Post SB €10.00
+P_865b92dbff: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C8 D10]
+P_6ad23bad39: Fold
+P_e9708c95bd: Call €10.00
+P_865b92dbff: Raise (NF) €60.00
+P_e9708c95bd: Fold
+*** SUMMARY ***
+Total pot €40.00 Rake €0.00
+P_865b92dbff: wins €40.00
+
+GAME #12543199311 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:29:30/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622374, 1179622373 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€570.00 in chips)
+Seat 6: P_e9708c95bd (€460.00 in chips)  DEALER
+Seat 10: P_865b92dbff (€470.00 in chips)
+P_865b92dbff: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D4 DA]
+P_e9708c95bd: Raise (NF) €40.00
+P_865b92dbff: Raise (NF) €470.00
+P_6ad23bad39: Fold
+P_e9708c95bd: Fold
+*** SUMMARY ***
+Total pot €100.00 Rake €0.00
+P_865b92dbff: wins €100.00
+
+GAME #12543209131 Version:26.7.1.14 Uncalled:N Texas Hold'em NL  Tournament 2026-09-30 03:43:12/GMT
+Table Info: Size: 3, Blinds: 50/100, Ante: 10
+Table Twister €5 SNG, 1179622600, 1179622599 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,488.00 in chips)  DEALER
+Seat 10: P_3dbc40be50 (€12.00 in chips)
+P_6ad23bad39: Post Ante €10.00
+P_3dbc40be50: Post Ante Allin €10.00
+P_6ad23bad39: Post SB €50.00
+P_3dbc40be50: Post BB Allin €2.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [D4 D10]
+*** FLOP *** [D7 C6 H3]
+*** TURN *** [H7]
+*** RIVER *** [CQ]
+*** SUMMARY ***
+Total pot €24.00 Rake €0.00
+P_6ad23bad39: Mucks [D4 D10] One Pair, Sevens
+P_3dbc40be50: Shows [HQ H5] Two Pair, Queens and Sevens
+P_3dbc40be50: wins €24.00
+
+GAME #12543209159 Version:26.7.1.14 Uncalled:N Texas Hold'em NL  Tournament 2026-09-30 03:43:25/GMT
+Table Info: Size: 3, Blinds: 50/100, Ante: 10
+Table Twister €5 SNG, 1179622600, 1179622599 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,476.00 in chips)
+Seat 10: P_3dbc40be50 (€24.00 in chips)  DEALER
+P_3dbc40be50: Post Ante €10.00
+P_6ad23bad39: Post Ante €10.00
+P_3dbc40be50: Post SB Allin €14.00
+P_6ad23bad39: Post BB €100.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S10 C2]
+*** FLOP *** [DK S9 HK]
+*** TURN *** [C3]
+*** RIVER *** [HJ]
+*** SUMMARY ***
+Total pot €48.00 Rake €0.00
+P_6ad23bad39: Mucks [S10 C2] One Pair, Kings
+P_3dbc40be50: Shows [C9 HA] Two Pair, Kings and Nines
+P_3dbc40be50: wins €48.00
+
+GAME #12543209190 Version:26.7.1.14 Uncalled:N Texas Hold'em NL  Tournament 2026-09-30 03:43:37/GMT
+Table Info: Size: 3, Blinds: 50/100, Ante: 10
+Table Twister €5 SNG, 1179622600, 1179622599 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,452.00 in chips)  DEALER
+Seat 10: P_3dbc40be50 (€48.00 in chips)
+P_6ad23bad39: Post Ante €10.00
+P_3dbc40be50: Post Ante €10.00
+P_6ad23bad39: Post SB €50.00
+P_3dbc40be50: Post BB Allin €38.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [H3 D5]
+*** FLOP *** [D4 C2 SA]
+*** TURN *** [S7]
+*** RIVER *** [HJ]
+*** SUMMARY ***
+Total pot €96.00 Rake €0.00
+P_6ad23bad39: Shows [H3 D5] Straight, Five High
+P_3dbc40be50: Shows [SQ HK] High Card, Ace
+P_6ad23bad39: wins €96.00
+
+GAME #12545200774 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 02:49:47/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179719705, 1179719704 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€470.00 in chips)
+Seat 6: P_85d47a7b86 (€580.00 in chips)  DEALER
+Seat 10: P_5fd234db52 (€450.00 in chips)
+P_5fd234db52: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CK H5]
+P_85d47a7b86: Call €20.00
+P_5fd234db52: Fold
+P_6ad23bad39: Check
+*** FLOP *** [D10 C7 C6]
+P_6ad23bad39: Check
+P_85d47a7b86: Check
+*** TURN *** [DA]
+P_6ad23bad39: Check
+P_85d47a7b86: Check
+*** RIVER *** [H9]
+P_6ad23bad39: Bet €50.00
+P_85d47a7b86: Raise (NF) €260.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €150.00 Rake €0.00
+P_85d47a7b86: Mucks [S8 X]
+P_85d47a7b86: wins €150.00
+
+GAME #12545210094 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 02:59:04/GMT
+Table Info: Size: 3, Blinds: 50/100, Ante: 10
+Table Twister €5 SNG, 1179719764, 1179719763 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,400.00 in chips)  DEALER
+Seat 6: P_c4a09f5970 (€100.00 in chips)
+P_6ad23bad39: Post Ante €10.00
+P_c4a09f5970: Post Ante €10.00
+P_6ad23bad39: Post SB €50.00
+P_c4a09f5970: Post BB Allin €90.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [SK H3]
+P_6ad23bad39: Call €40.00
+*** FLOP *** [SA H2 CJ]
+*** TURN *** [HK]
+*** RIVER *** [S8]
+*** SUMMARY ***
+Total pot €200.00 Rake €0.00
+P_6ad23bad39: Shows [SK H3] One Pair, Kings
+P_c4a09f5970: Shows [D8 C5] One Pair, Eights
+P_6ad23bad39: wins €200.00
+
+GAME #12545214921 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 03:05:11/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179720367, 1179720366 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,030.00 in chips)
+Seat 6: P_c4a09f5970 (€5.00 in chips)
+Seat 10: P_78156d0e27 (€465.00 in chips)  DEALER
+P_6ad23bad39: Post Ante €5.00
+P_c4a09f5970: Post Ante Allin €5.00
+P_78156d0e27: Post Ante €5.00
+P_6ad23bad39: Post SB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CA H3]
+P_78156d0e27: Call €40.00
+P_6ad23bad39: Raise (NF) €1,025.00
+P_78156d0e27: Fold
+*** FLOP *** [HK D7 CQ]
+*** TURN *** [D10]
+*** RIVER *** [C5]
+*** SUMMARY ***
+Total pot €95.00 Rake €0.00
+P_6ad23bad39: Shows [CA H3] High Card, Ace
+P_c4a09f5970: Shows [S8 CJ] High Card, King
+P_6ad23bad39: wins €95.00
+
+GAME #12545239831 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 03:27:48/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179721365, 1179721364 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_06bf0d1361 (€770.00 in chips)
+Seat 6: P_16bc77e565 (€705.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€25.00 in chips)
+P_6ad23bad39: Post Ante €5.00
+P_06bf0d1361: Post Ante €5.00
+P_16bc77e565: Post Ante €5.00
+P_6ad23bad39: Post SB Allin €20.00
+P_06bf0d1361: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S9 HA]
+P_16bc77e565: Call €40.00
+P_06bf0d1361: Raise (NF) €120.00
+P_16bc77e565: Fold
+*** FLOP *** [CK S8 H8]
+*** TURN *** [S7]
+*** RIVER *** [S2]
+*** SUMMARY ***
+Total pot €115.00 Rake €0.00
+P_06bf0d1361: Shows [S5 CQ] One Pair, Eights
+P_6ad23bad39: Shows [S9 HA] One Pair, Eights
+P_06bf0d1361: wins €40.00
+P_6ad23bad39: wins €75.00
+
+GAME #12545239644 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 03:37:28/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179722017, 1179722016 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_438c7baa67 (€600.00 in chips)
+Seat 6: P_6ad23bad39 (€885.00 in chips)  DEALER
+Seat 10: P_06bf0d1361 (€15.00 in chips)
+P_06bf0d1361: Post Ante €5.00
+P_438c7baa67: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_06bf0d1361: Post SB Allin €10.00
+P_438c7baa67: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C2 D8]
+P_6ad23bad39: Fold
+*** FLOP *** [C10 C4 C6]
+*** TURN *** [H6]
+*** RIVER *** [DJ]
+*** SUMMARY ***
+Total pot €35.00 Rake €0.00
+P_438c7baa67: Shows [SA C5] One Pair, Sixes
+P_06bf0d1361: Shows [CJ D9] Two Pair, Jacks and Sixes
+P_06bf0d1361: wins €35.00
+
+GAME #12549931179 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-03 04:03:07/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179959856, 1179959855 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,040.00 in chips)
+Seat 6: P_26c08b6e45 (€455.00 in chips)  DEALER
+Seat 10: P_f47e2ec3ad (€5.00 in chips)
+P_f47e2ec3ad: Post Ante Allin €5.00
+P_6ad23bad39: Post Ante €5.00
+P_26c08b6e45: Post Ante €5.00
+P_6ad23bad39: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [CA C8]
+P_26c08b6e45: Raise (NF) €450.00
+P_6ad23bad39: Call €420.00
+*** FLOP *** [D3 DA D8]
+*** TURN *** [HK]
+*** RIVER *** [C2]
+*** SUMMARY ***
+Total pot €915.00 Rake €0.00
+P_6ad23bad39: Shows [CA C8] Two Pair, Aces and Eights
+P_26c08b6e45: Shows [H10 CJ] High Card, Ace
+P_f47e2ec3ad: Shows [C9 D6] High Card, Ace
+P_6ad23bad39: wins €915.00
+
+GAME #12556772179 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-06 04:36:15/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1180299328, 1180299327 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€645.00 in chips)
+Seat 6: P_caff080065 (€855.00 in chips)  DEALER
+P_caff080065: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_caff080065: Post SB €20.00
+P_6ad23bad39: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C8 C5]
+P_caff080065: Raise (NF) €80.00
+P_6ad23bad39: Call €40.00
+*** FLOP *** [C10 SK DA]
+P_6ad23bad39: Check
+P_caff080065: Check
+*** TURN *** [HJ]
+P_6ad23bad39: Check
+P_caff080065: Check
+*** RIVER *** [D4]
+P_6ad23bad39: Check
+P_caff080065: Bet €770.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €170.00 Rake €0.00
+P_caff080065: Mucks [S8 X]
+P_caff080065: wins €170.00
+
+GAME #12556796858 Version:26.7.1.14 Uncalled:N Texas Hold'em NL  Tournament 2026-10-06 05:16:23/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1180301095, 1180301094 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€1,496.00 in chips)
+Seat 6: P_270a164187 (€4.00 in chips)  DEALER
+P_270a164187: Post Ante Allin €4.00
+P_6ad23bad39: Post Ante €5.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [H5 D7]
+*** FLOP *** [HQ D4 C3]
+*** TURN *** [D3]
+*** RIVER *** [D6]
+*** SUMMARY ***
+Total pot €8.00 Rake €0.00
+P_6ad23bad39: Shows [H5 D7] Straight, Seven High
+P_270a164187: Shows [C6 C10] Two Pair, Sixes and Threes
+P_6ad23bad39: wins €8.00
+
+GAME #12563425000 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-09 03:48:28/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1180640345, 1180640344 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_6ad23bad39 (€630.00 in chips)
+Seat 6: P_8d0a40adfb (€535.00 in chips)
+Seat 10: P_23376545a3 (€335.00 in chips)  DEALER
+P_6ad23bad39: Post Ante €5.00
+P_8d0a40adfb: Post Ante €5.00
+P_23376545a3: Post Ante €5.00
+P_6ad23bad39: Post SB €15.00
+P_8d0a40adfb: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C3 S4]
+P_23376545a3: Call €30.00
+P_6ad23bad39: Fold
+P_8d0a40adfb: Check
+*** FLOP *** [C4 CK CJ]
+P_8d0a40adfb: Check
+P_23376545a3: Check
+*** TURN *** [S10]
+P_8d0a40adfb: Check
+P_23376545a3: Check
+*** RIVER *** [D10]
+P_8d0a40adfb: Check
+P_23376545a3: Bet €90.00
+P_8d0a40adfb: Fold
+*** SUMMARY ***
+Total pot €90.00 Rake €0.00
+P_23376545a3: Mucks [S8 X]
+P_23376545a3: wins €90.00
+
+GAME #12574989677 Version:26.7.1.23 Uncalled:Y Texas Hold'em NL  Tournament 10-14-2026 07:00:55/GMT
+Table Info: Size: 3, RebuyAddon: Confirmed
+Table Twister €5 SNG, 1181221016, 1181221015 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 6: P_6ad23bad39 (€500.00 in chips)
+Seat 10: P_de44de61d8 (€500.00 in chips)  DEALER
+Seat 3: P_c21203f1de (€500.00 in chips)
+P_c21203f1de: Post SB €10.00
+P_6ad23bad39: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S8 H2]
+P_de44de61d8: Fold
+P_c21203f1de: Raise (NF) €40.00
+P_6ad23bad39: Fold
+*** SUMMARY ***
+Total pot €40.00 Rake €0.00
+P_c21203f1de: wins €40.00
+
+GAME #12574989703 Version:26.7.1.23 Uncalled:Y Texas Hold'em NL  Tournament 10-14-2026 07:01:25/GMT
+Table Info: Size: 3, RebuyAddon: Confirmed
+Table Twister €5 SNG, 1181221016, 1181221015 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 10: P_de44de61d8 (€500.00 in chips)
+Seat 3: P_c21203f1de (€520.00 in chips)  DEALER
+Seat 6: P_6ad23bad39 (€480.00 in chips)
+P_6ad23bad39: Post SB €10.00
+P_de44de61d8: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C7 H6]
+P_c21203f1de: Raise (NF) €40.00
+P_6ad23bad39: Fold
+P_de44de61d8: Call €20.00
+*** FLOP *** [D8 H9 CJ]
+P_de44de61d8: Check
+P_c21203f1de: Check
+*** TURN *** [C4]
+P_de44de61d8: Bet €60.00
+P_c21203f1de: Fold
+*** SUMMARY ***
+Total pot €90.00 Rake €0.00
+P_de44de61d8: wins €90.00
+
+GAME #12574989725 Version:26.7.1.23 Uncalled:Y Texas Hold'em NL  Tournament 10-14-2026 07:01:51/GMT
+Table Info: Size: 3, RebuyAddon: Confirmed
+Table Twister €5 SNG, 1181221016, 1181221015 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_c21203f1de (€480.00 in chips)
+Seat 6: P_6ad23bad39 (€470.00 in chips)  DEALER
+Seat 10: P_de44de61d8 (€550.00 in chips)
+P_de44de61d8: Post SB €10.00
+P_c21203f1de: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [S2 CJ]
+P_6ad23bad39: Fold
+P_de44de61d8: Call €10.00
+P_c21203f1de: Raise (NF) €60.00
+P_de44de61d8: Call €40.00
+*** FLOP *** [SQ H8 HJ]
+P_de44de61d8: Check
+P_c21203f1de: Bet €120.00
+P_de44de61d8: Call €120.00
+*** TURN *** [DQ]
+P_de44de61d8: Check
+P_c21203f1de: Bet €300.00
+P_de44de61d8: Fold
+*** SUMMARY ***
+Total pot €360.00 Rake €0.00
+P_c21203f1de: wins €360.00
+
+GAME #12543204171 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:40:01/GMT
+Table Info: Size: 3, Blinds: 20/40, Ante: 5
+Table Twister €5 SNG, 1179622714, 1179622713 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_96c6dfc30e (€295.00 in chips)
+Seat 6: P_629b8b9f20 (€420.00 in chips)  DEALER
+Seat 10: P_6ad23bad39 (€785.00 in chips)
+P_6ad23bad39: Post Ante €5.00
+P_96c6dfc30e: Post Ante €5.00
+P_629b8b9f20: Post Ante €5.00
+P_6ad23bad39: Post SB €20.00
+P_96c6dfc30e: Post BB €40.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [DA CK]
+P_629b8b9f20: Raise (NF) €415.00
+P_6ad23bad39: Allin €760.00
+P_96c6dfc30e: Allin €250.00
+*** FLOP *** [C4 S10 H4]
+*** TURN *** [H8]
+*** RIVER *** [S9]
+*** SUMMARY ***
+Total pot €1,135.00 Rake €0.00
+P_96c6dfc30e: Shows [HA D9] Two Pair, Nines and Fours
+P_629b8b9f20: Shows [C5 DK] One Pair, Fours
+P_6ad23bad39: Shows [DA CK] One Pair, Fours
+P_96c6dfc30e: wins €885.00
+P_6ad23bad39: wins €250.00
+
+GAME #12543204006 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:38:16/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179622714, 1179622713 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: P_96c6dfc30e (€455.00 in chips)
+Seat 6: P_629b8b9f20 (€415.00 in chips)
+Seat 10: P_6ad23bad39 (€630.00 in chips)  DEALER
+P_96c6dfc30e: Post Ante €5.00
+P_629b8b9f20: Post Ante €5.00
+P_6ad23bad39: Post Ante €5.00
+P_96c6dfc30e: Post SB €15.00
+P_629b8b9f20: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to P_6ad23bad39 [C4 D10]
+P_6ad23bad39: Fold
+P_96c6dfc30e: Raise (NF) €60.00
+P_629b8b9f20: Raise (NF) €90.00
+P_96c6dfc30e: Call €30.00
+*** FLOP *** [S3 D6 H10]
+P_96c6dfc30e: Check
+P_629b8b9f20: Check
+*** TURN *** [C3]
+P_96c6dfc30e: Check
+P_629b8b9f20: Check
+*** RIVER *** [DA]
+P_96c6dfc30e: Check
+P_629b8b9f20: Bet €60.00
+P_96c6dfc30e: Fold
+*** SUMMARY ***
+Total pot €195.00 Rake €0.00
+P_629b8b9f20: wins €195.00

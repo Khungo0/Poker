@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<session sessioncode="SIMULADO001">
+ <general><gametype>FICTICIO ONLY</gametype></general>
+ <game gamecode="1001">
+  <general><players>
+   <player seat="1" name="EJEMPLO_REG" chips="300.00" dealer="1" />
+   <player seat="2" name="EJEMPLO_FISH" chips="300.00" dealer="0" />
+  </players></general>
+  <round no="0"><action no="1" player="EJEMPLO_REG" actiontxt="SB" type="1" sum="10.00"/><action no="2" player="EJEMPLO_FISH" actiontxt="BB" type="2" sum="20.00"/></round>
+  <round no="1"><action no="3" player="EJEMPLO_REG" actiontxt="Raise To" type="23" sum="40.00"/><action no="4" player="EJEMPLO_FISH" actiontxt="Fold" type="0" sum="0.00"/></round>
+ </game>
+ <game gamecode="1002">
+  <general><players>
+   <player seat="1" name="EJEMPLO_FISH" chips="280.00" dealer="1" />
+   <player seat="2" name="EJEMPLO_REG" chips="320.00" dealer="0" />
+  </players></general>
+  <round no="0"><action no="1" player="EJEMPLO_FISH" actiontxt="SB" type="1" sum="10.00"/><action no="2" player="EJEMPLO_REG" actiontxt="BB" type="2" sum="20.00"/></round>
+  <round no="1"><action no="3" player="EJEMPLO_FISH" actiontxt="Call" type="3" sum="10.00"/><action no="4" player="EJEMPLO_REG" actiontxt="Check" type="4" sum="0.00"/></round>
+ </game>
+ <game gamecode="1003">
+  <general><players>
+   <player seat="1" name="EJEMPLO_BTN" chips="400" dealer="1" />
+   <player seat="2" name="EJEMPLO_FISH" chips="280" dealer="0" />
+   <player seat="3" name="EJEMPLO_REG" chips="310" dealer="0" />
+  </players></general>
+  <round no="0"><action no="1" player="EJEMPLO_FISH" actiontxt="SB" type="1" sum="10"/><action no="2" player="EJEMPLO_REG" actiontxt="BB" type="2" sum="20"/></round>
+  <round no="1"><action no="3" player="EJEMPLO_BTN" actiontxt="Fold" type="0" sum="0"/><action no="4" player="EJEMPLO_FISH" actiontxt="Raise To" type="23" sum="40"/><action no="5" player="EJEMPLO_REG" actiontxt="Call" type="3" sum="20"/></round>
+ </game>
+</session>

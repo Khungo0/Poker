@@ -1,0 +1,26 @@
+name: Windows desktop build
+on:
+  workflow_dispatch:
+  push:
+    paths: ['src/**', 'tests/**', 'desktop.py', 'requirements*.txt', 'packaging/**', '.github/workflows/windows.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Inno Setup
+        run: choco install innosetup --yes --no-progress
+      - name: Test and package
+        shell: pwsh
+        run: ./packaging/build_windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SpinPopulationLab-Windows
+          path: |
+            dist/SpinPopulationLab/
+            dist/installer/*.exe

@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+.venv/
+data/
+*.pyc
+build/
+dist/
+*.spec
+*.duckdb*
+*.sqlite*
+*.rar
+*.zip
