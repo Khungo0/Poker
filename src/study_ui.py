@@ -10,7 +10,7 @@ class StudyDashboard(QWidget):
         v.addWidget(QLabel('Spins 3-max · HU y 3H · estudio offline'))
         self.summary=QLabel();self.summary.setObjectName('metric');v.addWidget(self.summary)
         buttons=QHBoxLayout()
-        for label,barrels in [('Bet flop · limped pot',1),('Segundo barrel',2),('Tercer barrel · respuestas',3)]:
+        for label,barrels in [('Respuesta a bet flop · limped pot',1),('Respuesta al segundo barrel',2),('Tercer barrel · respuestas',3)]:
             b=QPushButton(label);b.clicked.connect(lambda checked=False,n=barrels:self.open_sequence(n));buttons.addWidget(b)
         v.addLayout(buttons);v.addWidget(QLabel('Mis investigaciones guardadas'));self.investigations=QListWidget();self.investigations.itemDoubleClicked.connect(self.open_saved);v.addWidget(self.investigations,1)
         v.addWidget(QLabel('Estrategias de estudio'));self.strategies=QListWidget();v.addWidget(self.strategies,1)
@@ -22,7 +22,7 @@ class StudyDashboard(QWidget):
         n=s.con.execute('SELECT count(*) FROM labels').fetchone()[0]
         self.note.setText(f'{n} jugadores etiquetados. Las comparaciones Reg/Fish usan tus etiquetas actuales; no se rellenan categorías ni referencias ausentes. Guarda tus investigaciones para retomarlas aquí.')
     def open_sequence(self,barrels):
-        panel=self.window.sequence_panel;panel.presets.setCurrentIndex(3-barrels);panel.load_preset(3-barrels);self.window.nav.setCurrentRow(self.window.stack.indexOf(panel));panel.run()
+        panel=self.window.sequence_panel;panel.presets.blockSignals(True);panel.presets.setCurrentIndex(3-barrels);panel.presets.blockSignals(False);panel.load_preset(3-barrels);self.window.nav.setCurrentRow(self.window.stack.indexOf(panel));panel.run()
     def open_saved(self,item):
         panel=self.window.sequence_panel;panel.refresh_saved();panel.saved.setCurrentText(item.text());self.window.nav.setCurrentRow(self.window.stack.indexOf(panel));panel.load_saved()
 

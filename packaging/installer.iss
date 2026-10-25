@@ -1,7 +1,7 @@
 [Setup]
 AppId={{C671E21D-9DF7-4BF3-B14A-9C307A1D96C2}
 AppName=Spin Population Lab
-AppVersion=0.3.0
+AppVersion=0.4.0
 DefaultDirName={localappdata}\Programs\SpinPopulationLab
 DefaultGroupName=Spin Population Lab
 PrivilegesRequired=lowest

@@ -1,4 +1,4 @@
-# Spin Population Lab · escritorio 0.3
+# Spin Population Lab · escritorio 0.4
 
 Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
 
@@ -9,7 +9,17 @@ Abre **Panel de estudio → Tercer barrel · respuestas**, selecciona stake y po
 
 La primera apertura de una base 0.2 crea un backup verificado y migra/regenera el contexto; puede tardar alrededor de un minuto en esta muestra. Se muestra progreso y la operación admite cancelación con rollback. **Datos y configuración** permite crear backups y restaurarlos como una copia nueva. Conserva también `imports/`.
 
-El [informe de esta iteración](docs/ITERATION_03.md) detalla resultados, cambios estadísticos, validación y fases pendientes. El spot prioritario tiene 196 respuestas verificadas con un algoritmo independiente; **no se califican como Fish sin etiquetas**. La especificación completa está en [PRODUCT_REQUEST.md](docs/PRODUCT_REQUEST.md).
+El [informe de la iteración 0.3](docs/ITERATION_03.md) conserva la validación del motor y la migración. El spot prioritario tiene 196 respuestas verificadas con un algoritmo independiente; **no se califican como Fish sin etiquetas**. La especificación completa está en [PRODUCT_REQUEST.md](docs/PRODUCT_REQUEST.md).
+
+## Nuevo en 0.4: contexto por rol y catálogo de reportes
+
+El **Explorador de secuencias** ofrece **27 reportes** y un constructor personalizado: aperturas HU/3H, BB frente a limp/minraise/shove, limp frente a iso, respuestas a 3bet, squeeze y botes limpeados. Se distinguen las oportunidades de apostar un barrel (bet/check) de las respuestas a ese barrel (fold/call/raise).
+
+En **Poblaciones por rol**, fija por ejemplo A = Reg y B = Fish. Las etiquetas, subperfiles y jugadores concretos se mantienen al avanzar a la siguiente acción. En los presets de barrels A apuesta y B defiende; en los demás, la descripción indica las posiciones de cada rol. Los filtros superiores **Actor de este nodo** y **Rival directo de este nodo** siguen aplicándose a la decisión actual.
+
+El constructor permite limitar el tamaño de cada paso en BB o porcentaje de bote, elegir el rol/posición/calle de la siguiente decisión y exigir que exista una subida legal. Las investigaciones antiguas siguen abriendo y la base conserva el esquema 2: esta actualización no regenera ni reimporta datos.
+
+Validación: **124 pruebas pasan**; el contraste independiente de los originales coincide en 15.392 aperturas HU, 743 respuestas a minraise y 765 oportunidades de squeeze 3H de €5. Consulta [ITERATION_04.md](docs/ITERATION_04.md) para los denominadores, límites y fases pendientes. El programa completo sigue en desarrollo.
 
 ## Abrir en Windows
 

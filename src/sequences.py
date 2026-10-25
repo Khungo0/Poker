@@ -8,6 +8,7 @@ from collections import Counter,defaultdict
 import math
 from .research import selection,FROM
 from .mathutils import wilson
+from .profiles import PROFILES
 
 ACTIONS={'fold','check','call','limp','bet','raise','check_raise','shove'}
 POSITIONS={'SB','BB','BTN'}
@@ -22,12 +23,33 @@ class Step:
     exclude:bool=False
     min_size:float|None=None
     max_size:float|None=None
+    min_bb:float|None=None
+    max_bb:float|None=None
+    can_raise:bool|None=None
 
     def validate(self):
         if self.street not in (1,2,3,4) or not self.actions or not set(self.actions)<=ACTIONS:raise ValueError('Invalid sequence action')
         if self.role not in ('','A','B','C') or self.position not in ('','SB','BB','BTN'):raise ValueError('Invalid role/position')
-        if (self.min_size is None)!=(self.max_size is None):raise ValueError('Both size limits required')
-        if self.min_size is not None and (not all(math.isfinite(x) for x in (self.min_size,self.max_size)) or not 0<=self.min_size<=self.max_size):raise ValueError('Invalid bet size range')
+        if self.can_raise is not None and not isinstance(self.can_raise,bool):raise ValueError('Invalid step raise eligibility')
+        for low,high in ((self.min_size,self.max_size),(self.min_bb,self.max_bb)):
+            if (low is None)!=(high is None):raise ValueError('Both size limits required')
+            if low is not None and (not all(math.isfinite(x) for x in (low,high)) or not 0<=low<=high):raise ValueError('Invalid bet size range')
+
+
+@dataclass(frozen=True)
+class RoleFilter:
+    """Current classification of a bound player, independent of the next actor."""
+    role:str
+    population:str=''
+    profile:str=''
+    player:str=''
+
+    def validate(self):
+        if self.role not in ('A','B','C'):raise ValueError('Invalid population role')
+        if self.population and self.population not in PROFILES:raise ValueError('Invalid role population')
+        profiles=PROFILES.get(self.population,[]) if self.population else sum(PROFILES.values(),[])
+        if self.profile and self.profile not in profiles:raise ValueError('Subperfil incompatible con la población del rol '+self.role)
+        if not isinstance(self.player,str):raise ValueError('Invalid role player')
 
 @dataclass(frozen=True)
 class Pattern:
@@ -36,17 +58,29 @@ class Pattern:
     target_role:str=''
     target_street:int|None=None
     name:str='Secuencia personalizada'
+    role_filters:tuple[RoleFilter,...]=()
+    target_position:str=''
+    target_can_raise:bool|None=None
 
     def validate(self):
         if self.anchor_street not in (1,2,3,4) or self.target_role not in ('','A','B','C'):raise ValueError('Invalid pattern')
         if self.target_street is not None and self.target_street not in (1,2,3,4):raise ValueError('Invalid target street')
+        if self.target_position not in ('','SB','BB','BTN'):raise ValueError('Invalid target position')
+        if self.target_can_raise is not None and not isinstance(self.target_can_raise,bool):raise ValueError('Invalid raise eligibility')
         if len(self.steps)>24 or sum(s.optional for s in self.steps)>8:raise ValueError('Sequence exceeds complexity limit')
         if any(a.street>b.street for a,b in zip(self.steps,self.steps[1:])):raise ValueError('Street order in sequence')
         for s in self.steps:s.validate()
+        roles={s.role for s in self.steps}|{self.target_role}
+        if len({f.role for f in self.role_filters})!=len(self.role_filters):raise ValueError('Duplicate role filter')
+        for f in self.role_filters:
+            f.validate()
+            if f.role not in roles:raise ValueError('Asigna el rol '+f.role+' a un paso o a la siguiente decisión antes de filtrarlo.')
 
     def to_dict(self):return asdict(self)
     @classmethod
-    def from_dict(cls,value):return cls(**dict(value,steps=tuple(Step(**dict(s,actions=tuple(s['actions']))) for s in value['steps'])))
+    def from_dict(cls,value):
+        return cls(**dict(value,steps=tuple(Step(**dict(s,actions=tuple(s['actions']))) for s in value['steps']),
+                          role_filters=tuple(RoleFilter(**f) for f in value.get('role_filters',[]))))
 
 
 def limped_barrels(streets=3):
@@ -68,6 +102,8 @@ def compile_pattern(pattern):
         conds.append('o.result '+('NOT IN' if step.exclude else 'IN')+' ('+','.join('?' for _ in step.actions)+')');params.extend(step.actions)
         if step.position:conds.append('o.position=?');params.append(step.position)
         if step.min_size is not None:conds.append('o.size_pct BETWEEN ? AND ?');params.extend([step.min_size,step.max_size])
+        if step.min_bb is not None:conds.append('o.size_bb BETWEEN ? AND ?');params.extend([step.min_bb,step.max_bb])
+        if step.can_raise is not None:conds.append('o.can_raise=?');params.append(step.can_raise)
         columns=[]
         for role in 'abc':
             if role==step.role.lower():
@@ -87,6 +123,8 @@ def compile_pattern(pattern):
         for other in 'abc':
             if other!=role:cond.append(f'(m.{other} IS NULL OR o.actor<>m.{other})')
     if pattern.target_street:cond.append('o.street=?');params.append(pattern.target_street)
+    if pattern.target_position:cond.append('o.position=?');params.append(pattern.target_position)
+    if pattern.target_can_raise is not None:cond.append('o.can_raise=?');params.append(pattern.target_can_raise)
     if cond:final+=' WHERE '+' AND '.join(cond)
     ctes.append('candidates AS MATERIALIZED ('+final+')')
     ctes.append('matched AS MATERIALIZED (SELECT * FROM candidates QUALIFY count(*) OVER (PARTITION BY hand_id,seq)=1)')
@@ -95,6 +133,14 @@ def compile_pattern(pattern):
 
 def matched_query(pattern,filters):
     prefix,params=compile_pattern(pattern);where,args=selection(filters)
+    for f in pattern.role_filters:
+        role='o.role_'+f.role.lower()
+        where+=f' AND {role} IS NOT NULL'
+        if f.population:
+            where+=f" AND COALESCE((SELECT category FROM labels WHERE player={role}),'Sin clasificar')=?";args.append(f.population)
+        if f.profile:
+            where+=f" AND (SELECT json_extract_string(payload,'$.profile') FROM documents WHERE kind='player_profile' AND name={role})=?";args.append(f.profile)
+        if f.player:where+=f' AND {role}=?';args.append(f.player)
     sql=prefix+' SELECT o.*,COALESCE(l.category,\'Sin clasificar\') AS category,COALESCE(lo.category,\'Sin clasificar\') AS opponent_category FROM matched o LEFT JOIN labels l ON o.actor=l.player LEFT JOIN labels lo ON o.opponent=lo.player WHERE '+where
     return sql,params+args
 
@@ -127,4 +173,12 @@ def sequence_report(store,pattern,filters,limit=200):
 
 def describe(pattern):
     names={1:'Preflop',2:'Flop',3:'Turn',4:'River'}
-    return ' → '.join(f"{names[s.street]} · {s.role or s.position or 'cualquier jugador'}: {'excepto ' if s.exclude else ''}{'/'.join(s.actions)}{' (opcional)' if s.optional else ''}" for s in pattern.steps)+f" → decisión de {pattern.target_role or 'siguiente jugador'}"
+    steps=[]
+    for s in pattern.steps:
+        who=' / '.join(x for x in (s.role,s.position) if x) or 'cualquier jugador'
+        size=(f' [{s.min_bb:g}–{s.max_bb:g} BB en la calle]' if s.min_bb is not None else '')+(f' [{s.min_size:.0%}–{s.max_size:.0%} del bote]' if s.min_size is not None else '')
+        eligibility=' · subida legal' if s.can_raise is True else ' · sin subida legal' if s.can_raise is False else ''
+        steps.append(f"{names[s.street]} · {who}: {'excepto ' if s.exclude else ''}{'/'.join(s.actions)}{size}{eligibility}{' (opcional)' if s.optional else ''}")
+    steps.append(f"decisión de {pattern.target_role or 'siguiente jugador'}"+(f' ({pattern.target_position})' if pattern.target_position else '')+(f' en {names[pattern.target_street]}' if pattern.target_street else '')+(' · subida legal requerida' if pattern.target_can_raise is True else ' · sin subida legal' if pattern.target_can_raise is False else ''))
+    roles='; '.join(f"Rol {f.role}: "+' · '.join(x for x in (f.population,f.profile,f.player) if x) for f in pattern.role_filters)
+    return ' → '.join(steps)+(f'. Poblaciones fijas: {roles}.' if roles else '')
