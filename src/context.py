@@ -1,5 +1,5 @@
 """Versioned context derived from validated decisions, without looking ahead."""
-ANALYSIS_VERSION = 2
+ANALYSIS_VERSION = 3
 CONTEXT_TYPES = {
     'played_at':'VARCHAR', 'tournament_format':'VARCHAR', 'pot_type':'VARCHAR',
     'active_players':'INTEGER', 'initial_stack_bb':'DOUBLE', 'initial_eff_bb':'DOUBLE',

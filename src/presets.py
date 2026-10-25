@@ -93,5 +93,7 @@ def research_presets():
     return presets
 
 
-PRESETS = research_presets()
+from .postflop import srp_presets
+
+PRESETS = research_presets() + srp_presets()
 PRESETS_BY_KEY = {p.key: p for p in PRESETS}

@@ -88,6 +88,7 @@ def replay(hand):
             delta=min(due,before); kind='call'
         elif kind=='allin': kind='raise' if contributed[actor]+delta>high else 'call'
         elif kind=='raise_to': kind='raise'
+        if street > 1 and high == 0 and kind == 'raise': kind='bet'
         if kind in ('fold','check') and delta!=0: raise ReplayError('Zero action with chips')
         if kind=='check' and due>0: raise ReplayError('Check facing bet')
         if kind=='call' and (due<=0 or delta!=min(due,before)): raise ReplayError('Call amount mismatch')

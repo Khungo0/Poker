@@ -165,8 +165,24 @@ def sequence_report(store,pattern,filters,limit=200):
     where,rootargs=selection(root_filters)
     root=store.con.execute('SELECT count(DISTINCT o.hand_id) '+FROM+' WHERE '+where,rootargs).fetchone()[0]
     reached=store.con.execute('SELECT count(DISTINCT hand_id) FROM ('+sql+')',args).fetchone()[0]
+    # Conditional distributions use only information available before acting.
+    strata=store.rows('WITH selected AS ('+sql+'''), strata AS (
+        SELECT 'Textura' dimension,texture value,result,street FROM selected
+        UNION ALL SELECT 'Apuesta enfrentada' dimension,
+        CASE WHEN facing_pct IS NULL THEN 'Sin apuesta'
+        WHEN facing_pct<=0.33 THEN '0–33%'
+        WHEN facing_pct<=0.5 THEN '>33–50%'
+        WHEN facing_pct<=0.75 THEN '>50–75%'
+        WHEN facing_pct<=1 THEN '>75–100%' ELSE '>100%' END value,result,street FROM selected)
+        SELECT dimension,value,CASE WHEN street>1 AND result='check_raise' THEN 'raise' ELSE result END result,
+        count(*) cases FROM strata GROUP BY ALL ORDER BY dimension,value,result''',args)
+    denominators=Counter()
+    for r in strata:denominators[(r['dimension'],r['value'])]+=r['cases']
+    for r in strata:
+        total=denominators[(r['dimension'],r['value'])];lo,hi=wilson(r['cases'],total)
+        r.update(opportunities=total,frequency=r['cases']/total,ci_low=lo,ci_high=hi)
     return dict(opportunities=n,players=len(players),root_hands=root,reached_hands=reached,
-                arrival=reached/root if root else None,rows=out,samples=samples,
+                arrival=reached/root if root else None,rows=out,samples=samples,breakdowns=strata,
                 contributions=sorted([dict(actor=p,opportunities=sum(c.values())) for p,c in by_player.items()],key=lambda x:x['opportunities'],reverse=True),
                 note='Frecuencia condicionada: acción / decisiones coincidentes. Llegada: manos coincidentes / manos del mismo formato, stake y período; los demás filtros solo afectan al numerador. IC Wilson por decisión, sin corrección por dependencia o búsquedas múltiples.')
 

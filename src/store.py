@@ -60,6 +60,11 @@ class Store:
                 self.con.execute('ROLLBACK');self.con.close();raise
         if not self.con.execute('SELECT count(*) FROM analysis_metadata').fetchone()[0]:
             self.con.execute('INSERT INTO analysis_metadata VALUES (?)',[ANALYSIS_VERSION])
+        elif self.con.execute('SELECT version FROM analysis_metadata').fetchone()[0] < ANALYSIS_VERSION:
+            try:
+                self.rebuild_analysis(progress=progress,cancelled=cancelled)
+            except Exception:
+                self.con.close();raise
 
     def rebuild_analysis(self,transaction=True,backup=True,progress=None,cancelled=None):
         # Original hands are immutable; regenerate derived observations transactionally.
