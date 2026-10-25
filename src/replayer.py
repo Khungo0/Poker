@@ -25,6 +25,7 @@ def replay_frames(hand):
         state['board']=hand.boards.get(e['street'],[])
         state['stacks']=e['stacks'].copy();state['bets']=e['bets'].copy();state['pot']=e['pot']
         if e['kind']=='fold':state['active'].remove(e['actor'])
+        state['seq']=e['seq']
         state['text']=f"{e['actor']} · {e['kind']} · aporta {e['delta']/hand.bb:.2f} BB";frames.append(deepcopy(state))
     for street in range(max(2,state['street']+1),5):
         if street in hand.boards:
@@ -69,3 +70,13 @@ class Replayer(QWidget):
         self.slider.valueChanged.connect(self.seek);tabs.addTab(page,'Mesa y acciones')
         original=QPlainTextEdit(raw);original.setReadOnly(True);tabs.addTab(original,'Historial original');self.seek(0)
     def seek(self,index):self.canvas.index=index;self.canvas.update();self.caption.setText(f"{index}/{len(self.frames)-1} · {self.frames[index]['text']}")
+
+    def seek_decision(self,seq):
+        # Stop immediately before the selected action. Prepare its street/board
+        # from the known hand but never reveal showdown cards at this point.
+        index=next((i for i,f in enumerate(self.frames) if f.get('seq')==seq),0)
+        if index:
+            before=deepcopy(self.frames[index-1]);before['board']=self.frames[index]['board'];before['street']=self.frames[index]['street']
+            if self.frames[index-1]['street']!=before['street']:before['bets']={n:0 for n in before['bets']}
+            before['text']='Antes de la decisión seleccionada';before.pop('seq',None)
+            self.frames.insert(index,before);self.slider.setMaximum(len(self.frames)-1);self.slider.setValue(index)

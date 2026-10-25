@@ -60,7 +60,7 @@ def player_profiles(store,format_=None):
         GROUP BY ALL ORDER BY hands DESC''',[format_,format_])
 
 
-def classify(store,rules):
+def classification_preview(store,rules):
     # Confidence is evidence strength of a rule, never a calibrated P(Reg/Fish).
     for rule in rules:
         from .profiles import PROFILES
@@ -68,23 +68,40 @@ def classify(store,rules):
         if rule.get('profile') and rule['profile'] not in PROFILES.get(rule['category'],[]):raise ValueError('Invalid rule profile')
         if rule['category'] not in ('Reg','Fish') or rule['metric'] not in ('vpip','pfr'): raise ValueError('Invalid rule')
         if rule['min_hands']<30 or not 0<=rule['low']<=rule['high']<=1: raise ValueError('Invalid rule limits')
-    store.con.execute("DELETE FROM labels WHERE origin='auto'")
-    assigned=0
+    proposals=[]
     by_format={f:{p['player']:p for p in player_profiles(store,f)} for f in ('HU','3H')}
     for p in player_profiles(store):
-        if p['origin']=='manual': continue
+        if p['origin']=='manual':
+            proposals.append(dict(player=p['player'],category=p['category'],status='Manual protegida',confidence=None,reason=p['reason'],profile=None));continue
         matches=[]
         for r in rules:
             sample=by_format.get(r.get('format'),{}).get(p['player']) if r.get('format') else p
             if not sample or sample['hands']<r['min_hands']: continue
             lo,hi=wilson(sample[r['metric']+'_cases'],sample['hands'])
             if lo>=r['low'] and hi<=r['high']: matches.append(r)
-        if len({(r['category'],r.get('profile')) for r in matches})!=1: continue
+        if len({(r['category'],r.get('profile')) for r in matches})!=1:
+            proposals.append(dict(player=p['player'],category='Sin clasificar',status='Conflicto' if matches else 'Sin evidencia suficiente',confidence=None,reason='Reglas incompatibles' if matches else 'Ningún IC completo cumple una regla con muestra suficiente',profile=None));continue
         r=matches[0];sample=by_format[r['format']][p['player']] if r.get('format') else p;lo,hi=wilson(sample[r['metric']+'_cases'],sample['hands'])
-        store.label(p['player'],r['category'],'auto',1-(hi-lo),f"Regla {r['metric']}; IC95 [{lo:.3f}, {hi:.3f}]; n={sample['hands']}; formato={r.get('format','HU+3H')}. Confianza heurística, no probabilidad de clase.",profile=r.get('profile'))
-        assigned+=1
-    store.save_document('rules','active',rules)
-    return assigned
+        proposals.append(dict(player=p['player'],category=r['category'],status='Propuesta automática',confidence=1-(hi-lo),reason=f"Regla {r['metric']}; IC95 [{lo:.3f}, {hi:.3f}]; n={sample['hands']}; formato={r.get('format') or 'HU+3H'}. Fuerza heurística, no probabilidad de clase.",profile=r.get('profile')))
+    return proposals
+
+
+def classify(store,rules):
+    proposals=classification_preview(store,rules)
+    store.con.execute('BEGIN')
+    try:
+        old=[r[0] for r in store.con.execute("SELECT player FROM labels WHERE origin='auto'").fetchall()]
+        for player in old:
+            store.label(player,'Sin clasificar','auto',reason='Reevaluación de reglas: evidencia anterior retirada',transaction=False)
+        store.con.execute("DELETE FROM documents WHERE kind='player_profile' AND name IN (SELECT player FROM labels WHERE origin='auto')")
+        store.con.execute("DELETE FROM labels WHERE origin='auto'")
+        assigned=0
+        for p in proposals:
+            if p['status']!='Propuesta automática':continue
+            store.label(p['player'],p['category'],'auto',p['confidence'],p['reason'],profile=p['profile'],transaction=False);assigned+=1
+        store.save_document('rules','active',rules);store.con.execute('COMMIT');return assigned
+    except Exception:
+        store.con.execute('ROLLBACK');raise
 
 
 def validate_baseline(b):

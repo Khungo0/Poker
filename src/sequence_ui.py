@@ -3,7 +3,7 @@ import json
 from dataclasses import replace
 from PySide6.QtCore import Qt,QThread,Signal
 from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QComboBox,QPushButton,QDoubleSpinBox,QCheckBox,QLineEdit,QTreeWidget,QTreeWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QGroupBox,QScrollArea,QProgressBar,QFileDialog,QMessageBox,QTabWidget
-from .sequences import Pattern,Step,RoleFilter,limped_barrels,sequence_report,describe
+from .sequences import Pattern,Step,RoleFilter,limped_barrels,sequence_report,describe,compare_reports
 from .presets import PRESETS
 from .store import Store
 from .replayer import Replayer
@@ -21,8 +21,10 @@ class ResearchWorker(QThread):
             s=Store(self.path);self.connection=s.con
             if self.isInterruptionRequested():return
             report=sequence_report(s,self.pattern,self.filters)
-            comparison={cat:sequence_report(s,self.pattern,dict(self.filters,population=cat),limit=0)['rows'] for cat in ('Reg','Fish')}
-            if not self.isInterruptionRequested():self.ready.emit(dict(report=report,comparison=comparison,pattern=self.pattern,filters=self.filters))
+            group_reports={cat:sequence_report(s,self.pattern,dict(self.filters,population=cat),limit=0) for cat in ('Reg','Fish')}
+            comparison={cat:r['rows'] for cat,r in group_reports.items()}
+            differences=compare_reports(group_reports['Reg'],group_reports['Fish'])
+            if not self.isInterruptionRequested():self.ready.emit(dict(report=report,comparison=comparison,differences=differences,group_reports=group_reports,pattern=self.pattern,filters=self.filters))
         except Exception as e:
             if not self.isInterruptionRequested():self.failed.emit(str(e))
         finally:
@@ -88,7 +90,7 @@ class SequencePanel(QWidget):
         self.description=QLabel();self.description.setWordWrap(True);self.description.setObjectName('muted');v.addWidget(self.description)
         self.progress=QProgressBar();self.progress.hide();v.addWidget(self.progress);self.kpis=QLabel('Selecciona un preset y pulsa Investigar.');self.kpis.setObjectName('metric');v.addWidget(self.kpis)
         self.tree=QTreeWidget();self.tree.setHeaderLabels(['Siguiente acción','Casos / oportunidades','Frecuencia · IC95','Por jugador','Reg','Fish']);self.tree.header().setSectionResizeMode(QHeaderView.ResizeToContents);self.tree.header().setStretchLastSection(True);self.tree.itemDoubleClicked.connect(self.follow);self.result_tabs=QTabWidget();self.result_tabs.addTab(self.tree,'Árbol de decisiones');v.addWidget(self.result_tabs,2)
-        self.hands=QTableWidget();self.hands.setEditTriggers(QTableWidget.NoEditTriggers);self.hands.setAlternatingRowColors(True);self.hands.cellDoubleClicked.connect(self.open_hand);self.result_tabs.addTab(self.hands,'Manos originales');self.breakdowns=QTableWidget();self.breakdowns.setEditTriggers(QTableWidget.NoEditTriggers);self.breakdowns.setAlternatingRowColors(True);self.result_tabs.addTab(self.breakdowns,'Tamaños y texturas')
+        self.hands=QTableWidget();self.hands.setEditTriggers(QTableWidget.NoEditTriggers);self.hands.setAlternatingRowColors(True);self.hands.cellDoubleClicked.connect(self.open_hand);self.result_tabs.addTab(self.hands,'Manos originales');self.breakdowns=QTableWidget();self.breakdowns.setEditTriggers(QTableWidget.NoEditTriggers);self.breakdowns.setAlternatingRowColors(True);self.result_tabs.addTab(self.breakdowns,'Tamaños y texturas');self.comparison_table=QTableWidget();self.comparison_table.setEditTriggers(QTableWidget.NoEditTriggers);self.result_tabs.addTab(self.comparison_table,'Reg vs Fish')
         self.notice=QLabel('Las categorías proceden de tus etiquetas. Sin etiquetas Fish no se generan estadísticas Fish.');self.notice.setWordWrap(True);v.addWidget(self.notice)
         foot=QHBoxLayout();self.saved=QComboBox();foot.addWidget(self.saved,1);load=QPushButton('Abrir investigación');load.clicked.connect(self.load_saved);foot.addWidget(load);export=QPushButton('Exportar investigación');export.clicked.connect(self.export);foot.addWidget(export);v.addLayout(foot)
         self.refresh_saved();self.describe();self.positions(self.filters['format'].currentText())
@@ -157,14 +159,21 @@ class SequencePanel(QWidget):
     def show_error(self,error):self.notice.setText(error)
     def show_report(self,result):
         if self.pattern!=result.get('pattern') or self.current_filters()!=result.get('filters'):
-            self.last=None;self.tree.clear();self.hands.setRowCount(0);self.breakdowns.setRowCount(0);self.kpis.setText('Filtros modificados');self.notice.setText('La consulta terminó con filtros anteriores. Pulsa Investigar para consultar la selección actual.');return
+            self.last=None;self.tree.clear();self.hands.setRowCount(0);self.breakdowns.setRowCount(0);self.comparison_table.setRowCount(0);self.kpis.setText('Filtros modificados');self.notice.setText('La consulta terminó con filtros anteriores. Pulsa Investigar para consultar la selección actual.');return
         self.last=result;report=result['report'];self.kpis.setText(f"{report['opportunities']:,} oportunidades  ·  {report['players']:,} jugadores  ·  llegada {report['reached_hands']:,}/{report['root_hands']:,} manos")
         self.tree.clear()
         for row in report['rows']:
             compare=[]
             for cat in ('Reg','Fish'):
-                r=next((r for r in result['comparison'][cat] if r['result']==row['result'] and r['street']==row['street']),None);compare.append(f"{r['frequency']:.1%} · n={r['opportunities']}" if r else 'Sin muestra')
+                r=next((r for r in result['comparison'][cat] if r['result']==row['result'] and r['street']==row['street']),None);compare.append(f"{r['frequency']:.1%} · n={r['opportunities']}" if r else (f"0.0% · n={result['group_reports'][cat]['opportunities']}" if result.get('group_reports',{}).get(cat,{}).get('opportunities') else 'Sin muestra'))
             item=QTreeWidgetItem([f"{row['street']} · {ACTION_NAMES[row['result']]}",f"{row['cases']} / {row['opportunities']}",f"{row['frequency']:.1%} [{row['ci_low']:.1%}, {row['ci_high']:.1%}]",f"{row['player_weighted']:.1%}",*compare]);item.setData(0,Qt.UserRole,row);self.tree.addTopLevelItem(item)
+        differences=result.get('differences',[]);keys=['action','a_n','a_players','a_frequency','a_low','a_high','b_n','b_players','b_frequency','b_low','b_high','difference_pp']
+        self.comparison_table.setColumnCount(len(keys));self.comparison_table.setHorizontalHeaderLabels(['Acción','Reg n','Reg jugadores','Reg %','Reg IC inferior','Reg IC superior','Fish n','Fish jugadores','Fish %','Fish IC inferior','Fish IC superior','Diferencia pp']);self.comparison_table.setRowCount(len(differences))
+        for i,r in enumerate(differences):
+            for j,key in enumerate(keys):
+                value=r[key];text='Sin muestra' if value is None else f'{value:.2f}' if key=='difference_pp' else f'{value:.1%}' if isinstance(value,float) else str(value)
+                self.comparison_table.setItem(i,j,QTableWidgetItem(text))
+        self.comparison_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         strata=report.get('breakdowns',[]);keys=['dimension','value','result','cases','opportunities','frequency','ci_low','ci_high']
         self.breakdowns.setColumnCount(len(keys));self.breakdowns.setHorizontalHeaderLabels(['Desglose','Grupo','Acción','Casos','Oportunidades','Frecuencia','IC95 inferior','IC95 superior']);self.breakdowns.setRowCount(len(strata))
         for i,r in enumerate(strata):
@@ -183,7 +192,7 @@ class SequencePanel(QWidget):
         self.pattern=replace(self.pattern,steps=self.pattern.steps+(Step(row['street'],actions,role=self.pattern.target_role,position=self.pattern.target_position,can_raise=self.pattern.target_can_raise),),target_role='',target_street=None,target_position='',target_can_raise=None);self.describe();self.run()
     def open_hand(self,row,column):
         if not self.last:return
-        ident=self.last['report']['samples'][row]['hand_id'];raw=self.store.con.execute('SELECT raw FROM hands WHERE hand_id=?',[ident]).fetchone()[0];self.replayer=Replayer(raw,self);self.replayer.show()
+        ident=self.last['report']['samples'][row]['hand_id'];raw=self.store.con.execute('SELECT raw FROM hands WHERE hand_id=?',[ident]).fetchone()[0];self.replayer=Replayer(raw,self);self.replayer.seek_decision(self.last['report']['samples'][row]['seq']);self.replayer.show()
     def save(self):
         if not self.name.text().strip():self.notice.setText('Escribe un nombre para guardar la investigación.');return
         self.store.save_document('investigation',self.name.text(),dict(pattern=self.pattern.to_dict(),filters=self.current_filters()));self.refresh_saved()

@@ -147,17 +147,18 @@ class Store:
             self.con.execute('ROLLBACK'); raise
         return report
 
-    def label(self,player,category,origin='manual',confidence=None,reason='Asignación del usuario',profile=None):
+    def label(self,player,category,origin='manual',confidence=None,reason='Asignación del usuario',profile=None,transaction=True):
         if category not in ('Reg','Fish','Sin clasificar'): raise ValueError('Invalid category')
         if profile is not None and profile not in PROFILES[category]:raise ValueError('Perfil incompatible con categoría')
-        self.con.execute('BEGIN')
+        if transaction:self.con.execute('BEGIN')
         try:
             self.con.execute('INSERT INTO label_history(id,player,category,origin,confidence,reason) VALUES (?,?,?,?,?,?)',[str(uuid.uuid4()),player,category,origin,confidence,reason])
             self.con.execute('INSERT INTO labels VALUES (?,?,?,?,?) ON CONFLICT(player) DO UPDATE SET category=excluded.category, origin=excluded.origin, confidence=excluded.confidence, reason=excluded.reason',[player,category,origin,confidence,reason])
             self.save_document('player_profile',player,dict(profile=profile,category=category))
-            self.con.execute('COMMIT')
+            if transaction:self.con.execute('COMMIT')
         except Exception:
-            self.con.execute('ROLLBACK');raise
+            if transaction:self.con.execute('ROLLBACK')
+            raise
 
     def save_document(self,kind,name,payload):
         if not name.strip(): raise ValueError('Nombre obligatorio')

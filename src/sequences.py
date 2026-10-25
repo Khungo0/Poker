@@ -198,3 +198,22 @@ def describe(pattern):
     steps.append(f"decisión de {pattern.target_role or 'siguiente jugador'}"+(f' ({pattern.target_position})' if pattern.target_position else '')+(f' en {names[pattern.target_street]}' if pattern.target_street else '')+(' · subida legal requerida' if pattern.target_can_raise is True else ' · sin subida legal' if pattern.target_can_raise is False else ''))
     roles='; '.join(f"Rol {f.role}: "+' · '.join(x for x in (f.population,f.profile,f.player) if x) for f in pattern.role_filters)
     return ' → '.join(steps)+(f'. Poblaciones fijas: {roles}.' if roles else '')
+
+
+def compare_reports(a,b):
+    """Descriptive differences; each population retains its own Wilson interval.
+
+    A zero case count with a nonzero denominator is evidence of zero observed
+    cases, not an absent sample. No independence/EV claim is made here.
+    """
+    actions=sorted({(r['street'],r['result']) for report in (a,b) for r in report['rows']})
+    out=[]
+    for street,action in actions:
+        row=dict(street=street,action=action)
+        for name,report in (('a',a),('b',b)):
+            n=report['opportunities'];k=next((r['cases'] for r in report['rows'] if (r['street'],r['result'])==(street,action)),0)
+            lo,hi=wilson(k,n) if n else (None,None)
+            row.update({name+'_n':n,name+'_players':report['players'],name+'_frequency':k/n if n else None,name+'_low':lo,name+'_high':hi})
+        row['difference_pp']=100*(row['a_frequency']-row['b_frequency']) if a['opportunities'] and b['opportunities'] else None
+        out.append(row)
+    return out
