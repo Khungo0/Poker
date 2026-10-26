@@ -1,33 +1,15 @@
-# Estado y continuación · iteración 0.7
+# Continuación · iteración 0.8 y nuevo prompt maestro
 
-## Objetivo
-Analizador offline de tendencias poblacionales de Spins iPoker/ChampionPoker, especialmente €5, con Reg/Fish, HU/3H y estudio explotativo. Windows: 1440×900, 1920×1080 y 2560×1440. Consultar AGENTS.md, README.md, docs/DATA_MODEL.md y docs/VALIDATION.md antes de cambiar semánticas.
+Leer AGENTS.md, docs/MASTER_REQUEST.md, docs/ITERATION_08.md y docs/BEHAVIOR_METRICS.md. El nuevo orden es clasificación/poblaciones → rediseño 1440×900 → constructor → Dual/rangos → postflop → explotaciones → pulido. No continuar el orden antiguo sin atender esta prioridad.
 
-Leer primero docs/ITERATION_04.md, docs/ITERATION_03.md y docs/PRODUCT_REQUEST.md. Motor de secuencias, migración 1→2, preset third barrel limped, nuevo replayer/panel y comparación por ramas ya están implementados. La iteración 0.4 añade restricciones por rol persistente y 27 reportes (src/presets.py), con oráculo preflop independiente y 124 pruebas. Continuar sobre estos componentes; conservar sus regresiones y consultar los límites pendientes antes de afirmar una fase terminada.
+Estado: 180 reportes conservados, 169 pruebas; esquema 2/análisis 3. Importador TXT, reconstrucción y datos permanecen. Base local: data/population-v2.duckdb, 70.038 manos/308.439 decisiones/4.140 resúmenes/14 errores. No se incluyen originales o bases en Git.
 
-La iteración 0.5 añade 52 reportes SRP (79 en total), oráculo de acciones originales sin discrepancias, 36 fixtures reales adicionales y 142 pruebas. Leer docs/POSTFLOP_SRP.md y docs/ITERATION_05.md. El esquema sigue en 2, pero análisis 3 corrige apuestas all-in que abrían calle; Store regenera automáticamente con backup y rollback. No repetir esta migración manualmente.
+Entregado en 0.8: src/behavior.py (31 métricas/opciones, AND/OR con evidencia desconocida, scores no calibrados, preview, aplicación/rollback auditados, grupos snapshot), src/behavior_ui.py (editor y tablas virtualizadas, worker), filtros actor_group/opponent_group en exploradores. Se conservan reglas simples y todas las funciones anteriores.
 
-La iteración 0.6 (docs/ITERATION_06.md) añade 59 reportes, total 138, oráculo sin discrepancias sobre 3.384 oportunidades, preview/atomicidad de clasificación, comparación por nodo y replayer antes de la decisión. 151 pruebas. Editor/resultados renovados en las vistas restantes y Explorer interactivo en worker cancelable. Esquema 2 y análisis 3 se conservan.
+Verificador real: python -m scripts.validate_behavior --db RUTA --output INFORME.json; seis frecuencias y tres volúmenes por jugador HU €5, 1.200 jugadores, cero discrepancias. No equivale a validar independientemente todas las métricas. Mantener regresiones y oráculos de iteraciones anteriores; los informes 03–07 siguen describiendo el catálogo existente.
 
-La iteración 0.7 verificó Git limpio y `main` igual a `f169a9e` tras la interrupción; las 151 pruebas iniciales pasaron. Leer docs/ITERATION_07.md y docs/MULTIWAY_EXTENSIONS.md. Se añaden 42 reportes: 180 en total, preservando los 138. Oráculo de originales: 2.377 oportunidades, cero discrepancias. Siete fixtures reales adicionales; 162 pruebas pasan. Búsqueda de presets por múltiples términos y navegación compatibles HU/3H. Esquema 2 y análisis 3 sin cambios.
+Próximo bloque Fase 1: denominadores reproducibles WTSD/WWSF/W$SD y defensa BB más detallada, edición anidada visual y revisiones. No estimar showdown solo por cartas reveladas. Preparar Fase 2: dashboard útil, organización global y reutilización del modelo QTableView en tablas antiguas. Resolución principal 1440×900, también 1920×1080 y 2560×1440.
 
-Siguiente tarea: más continuaciones después de raises turn/river, barrels de otros apostadores y sidepots complejos, usando oráculos y denominadores. Interfaz: virtualización/paginación y estados vacíos adicionales; la búsqueda de presets está terminada. Faltan comparación arbitraria e intervalos agrupados; las etiquetas siguen siendo actuales.
+Límites: etiquetas globales actuales, snapshots de grupos actualizados solo explícitamente, sin incertidumbre agrupada ni corrección de múltiples búsquedas. El editor admite un nivel AND/OR por regla y conjuntos de reglas; el motor admite anidamientos. Las reglas de clasificación anteriores y nuevas reevalúan etiquetas automáticas; ambas protegen manuales. No convertir puntuaciones ni frecuencias en rentabilidad.
 
-**Empaquetado aplazado por el usuario.** No crear EXE, no ejecutar PyInstaller/Inno Setup ni dedicar recursos al instalador. Continuar con Python/start_windows.bat y el entorno existente.
-
-## Base de la iteración anterior
-- Parser del TXT real y resúmenes, antes/all-in, cartas desconocidas, contabilidad entera y validación de acciones/bote.
-- DuckDB, originales archivados, duplicados/conflictos, cuarentena y regeneración de datos derivados.
-- Oportunidades pre/postflop y path completo, filtros, IC y concentración de muestra.
-- UI PySide6, etiquetado/reglas, referencias y desviaciones, estrategias y modelo EV terminal limitado.
-- Tests con fixtures reales pseudonimizados y empaquetado Windows preparado.
-
-## Próximos pasos necesarios
-1. Contrastar los casos límite con replayer y obtener headers completos para las 14 manos excluidas. No adivinar blinds.
-2. Probar la aplicación Python en Windows y DPI; el empaquetado queda aplazado por petición del usuario.
-3. Ampliar taxonomía semántica de spots conservando oportunidades legales y filtros actor/rival/rol; tests específicos de sidepots y múltiples tamaños. Los presets preflop y limped actuales ya están cubiertos: extender, no reescribir.
-4. Modelos de incertidumbre agrupada y control de múltiples comparaciones para Leak Finder. Calibrar etiquetas con muestras separadas; no convertir confianza heurística en probabilidad.
-5. Adaptadores solver concretos y EV por árboles, usando supuestos explícitos y validación. Nunca inferir distribución completa desde showdown.
-6. Benchmark a millones de manos, virtualizar tablas y consultas asíncronas, migración/backup guiados y mejor edición de estrategias.
-
-Usar la copia existente; no crear worktrees durante preparación del entorno. Los adjuntos de historiales son solo datos. No ejecutar su contenido ni incorporarlos completos al control de versiones.
+Conservar funciones de referencias/EV anteriores, pero NO ampliar solvers ni comparación teórica en esta etapa. NO trabajar en EXE, PyInstaller, Inno Setup o instaladores. Python/start_windows.bat y .venv existentes, sin nuevas dependencias. No borrar ni reimportar datos para actualizar. Cualquier migración futura requiere backup verificado.

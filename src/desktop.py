@@ -12,6 +12,7 @@ from .study_ui import StudyDashboard,SettingsPanel
 from .research import explore,player_profiles,classify,leaks,save_strategy,import_reference,terminal_bet_ev,validate_baseline,selection,FROM,classification_preview
 
 from .theme import DARK
+from .behavior_ui import BehaviorPanel
 
 
 
@@ -155,6 +156,9 @@ class Window(QMainWindow):
         ranges.addWidget(self.size_lo,3,0);ranges.addWidget(self.size_hi,3,1);left.addWidget(group)
         self.extra=QLineEdit('{}');self.extra.hide();self.path_filter=QLineEdit();self.path_filter.hide()
         self.actor_filter=QLineEdit();self.actor_filter.setPlaceholderText('Jugador concreto');left.addWidget(self.actor_filter)
+        self.group_filters={}
+        for key,title in [('actor_group','Grupo de estudio actor'),('opponent_group','Grupo de estudio rival')]:
+            left.addWidget(QLabel(title));combo=QComboBox();combo.addItems(['Todos']+[d['name'] for d in self.store.documents('population')]);self.group_filters[key]=combo;left.addWidget(combo)
         self.include_hero=QCheckBox('Incluir Hero');left.addWidget(self.include_hero)
         self.explorer_run=self.button(left,'Investigar población',lambda:self.refresh_explorer(True));self.explorer_run.setObjectName('primary')
         self.explorer_cancel=self.button(left,'Cancelar consulta',lambda:self.explorer_worker.stop() if self.explorer_worker else None);self.explorer_cancel.setEnabled(False)
@@ -177,7 +181,7 @@ class Window(QMainWindow):
         if self.size_mode.currentIndex():f['facing_pct']=[self.size_lo.value()/100,self.size_hi.value()/100]
         if self.path_filter.text().strip():f['path']=self.path_filter.text().strip()
         if self.actor_filter.text().strip():f['actor']=self.actor_filter.text().strip()
-        f.update(json.loads(self.extra.text()));return f
+        f.update({k:c.currentText() for k,c in self.group_filters.items() if c.currentText()!='Todos'});f.update(json.loads(self.extra.text()));return f
 
     def refresh_explorer(self,background=False):
         if background:
@@ -281,6 +285,14 @@ class Window(QMainWindow):
         self.button(box,'Aplicar reglas',lambda:(classify(self.store,json.loads(self.rules.toPlainText())),self.refresh_players()))
         self.player_search=QLineEdit();self.player_search.setPlaceholderText('Buscar jugador');box.insertWidget(2,self.player_search);self.player_search.textChanged.connect(self.filter_players)
         self.classification_tabs=self.organize_page(box,[self.players_table,self.preview_table],['Jugadores','Vista previa de reglas'])
+        legacy=QWidget();legacy_layout=QVBoxLayout(legacy);legacy_layout.setContentsMargins(0,0,0,0);legacy_layout.addWidget(box.takeAt(2).widget())
+        self.population_workspace=QTabWidget();self.population_workspace.addTab(legacy,'Etiquetas y reglas anteriores');self.behavior_panel=BehaviorPanel(self.store);self.population_workspace.addTab(self.behavior_panel,'Métricas y poblaciones');box.addWidget(self.population_workspace,1);self.behavior_panel.populationsChanged.connect(self.refresh_groups)
+
+    def refresh_groups(self):
+        names=[d['name'] for d in self.store.documents('population')]
+        for combo in [*getattr(self,'group_filters',{}).values(),*[self.sequence_panel.filters[k] for k in ('actor_group','opponent_group') if k in self.sequence_panel.filters]]:
+            selected=combo.currentText();combo.clear();combo.addItems(['Todos']+names);combo.setCurrentText(selected if selected in names else 'Todos')
+        self.refresh_players()
 
     def preview_classification(self):
         fill(self.preview_table,classification_preview(self.store,json.loads(self.rules.toPlainText())));self.classification_tabs.setCurrentIndex(1)
@@ -381,7 +393,7 @@ class Window(QMainWindow):
         self.show_rules()
 
     def closeEvent(self,event):
-        if (self.explorer_worker and self.explorer_worker.isRunning()) or (self.worker and self.worker.isRunning()) or (self.sequence_panel.worker and self.sequence_panel.worker.isRunning()):QMessageBox.information(self,'Importación en curso','Espera a que termine la importación antes de cerrar.');event.ignore();return
+        if (self.behavior_panel.worker and self.behavior_panel.worker.isRunning()) or (self.explorer_worker and self.explorer_worker.isRunning()) or (self.worker and self.worker.isRunning()) or (self.sequence_panel.worker and self.sequence_panel.worker.isRunning()):QMessageBox.information(self,'Operación en curso','Cancela o espera a que terminen las consultas e importaciones antes de cerrar.');event.ignore();return
         self.store.save_document('preferences','sequence',dict(pattern=self.sequence_panel.pattern.to_dict(),filters=self.sequence_panel.current_filters()))
         self.store.close();event.accept()
 

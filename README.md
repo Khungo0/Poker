@@ -1,4 +1,4 @@
-# Spin Population Lab · escritorio 0.7
+# Spin Population Lab · escritorio 0.8
 
 Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
 
@@ -6,6 +6,10 @@ Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evoluci
 ## Actualizar y seguir usando Python
 
 Actualiza el código en la misma carpeta, conservando `.venv` y tus datos, y vuelve a abrir **start_windows.bat**. No hay dependencias nuevas ni necesitas reinstalar Python. La base existente es compatible y no hay que reimportar historiales. El empaquetado/instalador está aplazado; no se construye automáticamente al actualizar código.
+
+**Nuevo en 0.8 · clasificación y poblaciones:** se conservan los **180 reportes**. En **Regulares y Fishes → Métricas y poblaciones** puedes consultar 31 métricas/opciones por contexto, combinar reglas AND/OR, revisar evidencia, aplicar/deshacer clasificaciones y guardar grupos sin cambiar etiquetas. Los grupos se filtran como actor/rival en ambos exploradores. Los resultados nuevos usan tablas con búsqueda, ordenación, barras y exportación.
+
+**169 pruebas pasan**. Un verificador independiente coincide por jugador en seis frecuencias y tres contadores de volumen de 1.200 rivales HU de €5. [Definiciones](docs/BEHAVIOR_METRICS.md), [cómo probar y pendientes](docs/ITERATION_08.md). El nuevo [prompt maestro](docs/MASTER_REQUEST.md) empieza por clasificación; no se amplían solvers ni comparación teórica.
 
 **Nuevo en 0.7:** **180 reportes**, conservando los 138 anteriores. Se añaden limped multiway y respuestas frente a raises/reraises con roles persistentes, además de búsqueda visual de presets por términos como `3H limped` o `raise SB`.
 

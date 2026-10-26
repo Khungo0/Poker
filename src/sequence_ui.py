@@ -57,6 +57,10 @@ class SequencePanel(QWidget):
         for i,(key,label,values) in enumerate([('format','Estado',['HU','3H']),('population','Actor de este nodo',['Todos','Reg','Fish','Sin clasificar']),('opponent_population','Rival directo de este nodo',['Todos','Reg','Fish','Sin clasificar']),('stake','Stake',['Todos']+[r[0] for r in store.con.execute('SELECT DISTINCT stake FROM hands ORDER BY stake').fetchall()]),('position','Posición',['Todos','SB','BB']),('pot_type','Bote',['Todos','limped','limp_iso','srp','3bet','4bet+','unraised']),('actor_profile','Subperfil actor',['Todos']+PROFILES['Reg']+PROFILES['Fish']),('opponent_profile','Subperfil rival',['Todos']+PROFILES['Reg']+PROFILES['Fish'])]):
             combo=QComboBox();combo.addItems(values);grid.addWidget(QLabel(label),2*(i//4),i%4);grid.addWidget(combo,2*(i//4)+1,i%4);self.filters[key]=combo
         self.filters['format'].currentTextChanged.connect(self.positions);self.filters['pot_type'].setCurrentText('limped');v.addLayout(grid)
+        groups=QHBoxLayout()
+        for key,label in [('actor_group','Grupo de estudio actor'),('opponent_group','Grupo de estudio rival')]:
+            groups.addWidget(QLabel(label));combo=QComboBox();combo.addItems(['Todos']+[d['name'] for d in store.documents('population')]);groups.addWidget(combo,1);self.filters[key]=combo
+        v.addLayout(groups)
         role_group=QGroupBox('Poblaciones por rol · se conservan al avanzar');role_grid=QGridLayout(role_group);self.role_controls={};self.syncing=False
         for col,text in enumerate(('Rol','Población','Subperfil','Jugador concreto')):role_grid.addWidget(QLabel(text),0,col)
         for i,role in enumerate('ABC'):
