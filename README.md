@@ -1,4 +1,4 @@
-# Spin Population Lab · escritorio 0.6
+# Spin Population Lab · escritorio 0.7
 
 Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evolución del prototipo adjunto: interfaz PySide6 oscura, DuckDB y un importador del formato TXT real aportado. Diseñada para **1440×900, 1920×1080 y 2560×1440**, con layout adaptable y escalado Qt. No incluye HUD ni lectura de mesas.
 
@@ -6,6 +6,10 @@ Aplicación de investigación **offline** de Spins iPoker/ChampionPoker. Evoluci
 ## Actualizar y seguir usando Python
 
 Actualiza el código en la misma carpeta, conservando `.venv` y tus datos, y vuelve a abrir **start_windows.bat**. No hay dependencias nuevas ni necesitas reinstalar Python. La base existente es compatible y no hay que reimportar historiales. El empaquetado/instalador está aplazado; no se construye automáticamente al actualizar código.
+
+**Nuevo en 0.7:** **180 reportes**, conservando los 138 anteriores. Se añaden limped multiway y respuestas frente a raises/reraises con roles persistentes, además de búsqueda visual de presets por términos como `3H limped` o `raise SB`.
+
+**162 pruebas pasan**. Los 42 reportes nuevos coinciden con un verificador de acciones originales en 2.377 oportunidades sumadas, sin discrepancias. No se cambia el esquema ni se requiere reimportación. [Verificación tras la interrupción, uso y pendientes](docs/ITERATION_07.md).
 
 **Nuevo en 0.6:** 138 reportes (los 79 anteriores más 59 de SRP multiway/river), clasificación con vista previa y aplicación transaccional, comparación Reg/Fish con intervalos y diferencia en puntos porcentuales, consultas del Explorer cancelables en segundo plano y replayer situado antes de la decisión. Clasificación, importación, leaks, estrategias y referencias usan paneles modernos de edición/resultados.
 

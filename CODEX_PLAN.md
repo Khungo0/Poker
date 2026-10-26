@@ -1,4 +1,4 @@
-# Estado y continuación · iteración 0.6
+# Estado y continuación · iteración 0.7
 
 ## Objetivo
 Analizador offline de tendencias poblacionales de Spins iPoker/ChampionPoker, especialmente €5, con Reg/Fish, HU/3H y estudio explotativo. Windows: 1440×900, 1920×1080 y 2560×1440. Consultar AGENTS.md, README.md, docs/DATA_MODEL.md y docs/VALIDATION.md antes de cambiar semánticas.
@@ -9,7 +9,9 @@ La iteración 0.5 añade 52 reportes SRP (79 en total), oráculo de acciones ori
 
 La iteración 0.6 (docs/ITERATION_06.md) añade 59 reportes, total 138, oráculo sin discrepancias sobre 3.384 oportunidades, preview/atomicidad de clasificación, comparación por nodo y replayer antes de la decisión. 151 pruebas. Editor/resultados renovados en las vistas restantes y Explorer interactivo en worker cancelable. Esquema 2 y análisis 3 se conservan.
 
-Siguiente tarea: extender multiway tras raises y sidepots, ampliar limped multiway y otras líneas river, mantener oráculos y denominadores. Interfaz: búsqueda de presets, estados vacíos y virtualización; faltan comparación arbitraria e intervalos agrupados. Las clasificaciones siguen siendo actuales, no históricas.
+La iteración 0.7 verificó Git limpio y `main` igual a `f169a9e` tras la interrupción; las 151 pruebas iniciales pasaron. Leer docs/ITERATION_07.md y docs/MULTIWAY_EXTENSIONS.md. Se añaden 42 reportes: 180 en total, preservando los 138. Oráculo de originales: 2.377 oportunidades, cero discrepancias. Siete fixtures reales adicionales; 162 pruebas pasan. Búsqueda de presets por múltiples términos y navegación compatibles HU/3H. Esquema 2 y análisis 3 sin cambios.
+
+Siguiente tarea: más continuaciones después de raises turn/river, barrels de otros apostadores y sidepots complejos, usando oráculos y denominadores. Interfaz: virtualización/paginación y estados vacíos adicionales; la búsqueda de presets está terminada. Faltan comparación arbitraria e intervalos agrupados; las etiquetas siguen siendo actuales.
 
 **Empaquetado aplazado por el usuario.** No crear EXE, no ejecutar PyInstaller/Inno Setup ni dedicar recursos al instalador. Continuar con Python/start_windows.bat y el entorno existente.
 

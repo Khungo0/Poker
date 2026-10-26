@@ -2,7 +2,7 @@
 import json
 from dataclasses import replace
 from PySide6.QtCore import Qt,QThread,Signal
-from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QComboBox,QPushButton,QDoubleSpinBox,QCheckBox,QLineEdit,QTreeWidget,QTreeWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QGroupBox,QScrollArea,QProgressBar,QFileDialog,QMessageBox,QTabWidget
+from PySide6.QtWidgets import QWidget,QVBoxLayout,QHBoxLayout,QGridLayout,QLabel,QComboBox,QPushButton,QDoubleSpinBox,QCheckBox,QLineEdit,QTreeWidget,QTreeWidgetItem,QTableWidget,QTableWidgetItem,QHeaderView,QGroupBox,QScrollArea,QProgressBar,QFileDialog,QMessageBox,QTabWidget,QListWidget,QListWidgetItem
 from .sequences import Pattern,Step,RoleFilter,limped_barrels,sequence_report,describe,compare_reports
 from .presets import PRESETS
 from .store import Store
@@ -49,6 +49,10 @@ class SequencePanel(QWidget):
         top=QHBoxLayout();self.presets=QComboBox();self.presets.addItems([p.label for p in PRESETS]);self.presets.setMinimumContentsLength(20);self.presets.setSizeAdjustPolicy(QComboBox.AdjustToMinimumContentsLengthWithIcon);top.addWidget(self.presets,1)
         self.presets.currentIndexChanged.connect(self.load_preset);self.back=QPushButton('← Atrás');self.back.clicked.connect(self.go_back);top.addWidget(self.back)
         self.name=QLineEdit();self.name.setPlaceholderText('Nombre de investigación');top.addWidget(self.name);save=QPushButton('★ Guardar');save.clicked.connect(self.save);top.addWidget(save);v.addLayout(top)
+        self.preset_search=QLineEdit();self.preset_search.setPlaceholderText('Buscar reportes: limped, river, raise, barrel…');self.preset_search.setClearButtonEnabled(True);v.addWidget(self.preset_search)
+        self.search_status=QLabel();self.search_status.setObjectName('muted');self.search_status.hide();v.addWidget(self.search_status)
+        self.search_results=QListWidget();self.search_results.setMaximumHeight(190);self.search_results.hide();v.addWidget(self.search_results)
+        self.preset_search.textChanged.connect(self.search_presets);self.search_results.itemClicked.connect(self.open_search_result)
         grid=QGridLayout();self.filters={}
         for i,(key,label,values) in enumerate([('format','Estado',['HU','3H']),('population','Actor de este nodo',['Todos','Reg','Fish','Sin clasificar']),('opponent_population','Rival directo de este nodo',['Todos','Reg','Fish','Sin clasificar']),('stake','Stake',['Todos']+[r[0] for r in store.con.execute('SELECT DISTINCT stake FROM hands ORDER BY stake').fetchall()]),('position','Posición',['Todos','SB','BB']),('pot_type','Bote',['Todos','limped','limp_iso','srp','3bet','4bet+','unraised']),('actor_profile','Subperfil actor',['Todos']+PROFILES['Reg']+PROFILES['Fish']),('opponent_profile','Subperfil rival',['Todos']+PROFILES['Reg']+PROFILES['Fish'])]):
             combo=QComboBox();combo.addItems(values);grid.addWidget(QLabel(label),2*(i//4),i%4);grid.addWidget(combo,2*(i//4)+1,i%4);self.filters[key]=combo
@@ -97,6 +101,23 @@ class SequencePanel(QWidget):
         prefs=store.documents('preferences')
         previous=next((d['payload'] for d in prefs if d['name']=='sequence'),None)
         if previous:self.apply_payload(previous)
+
+    def search_presets(self,text):
+        import unicodedata
+        def normalize(value):return ''.join(c for c in unicodedata.normalize('NFKD',value.casefold()) if not unicodedata.combining(c))
+        tokens=normalize(text).split();self.search_results.clear()
+        self.search_status.setVisible(bool(tokens));self.search_results.setVisible(bool(tokens))
+        if not tokens:return
+        matches=[(i,p) for i,p in enumerate(PRESETS) if p.key!='custom' and all(t in normalize(p.label+' '+p.key) for t in tokens)]
+        self.search_status.setText(f'{len(matches)} reportes coinciden'+(' · mostrando los primeros 30' if len(matches)>30 else '') if matches else 'Sin coincidencias. Prueba otro término; tus filtros actuales se conservan.')
+        for index,preset in matches[:30]:
+            item=QListWidgetItem(preset.label);item.setData(Qt.UserRole,index);self.search_results.addItem(item)
+
+    def open_search_result(self,item):
+        index=item.data(Qt.UserRole)
+        if self.presets.currentIndex()==index:self.load_preset(index)
+        else:self.presets.setCurrentIndex(index)
+        self.preset_search.clear()
 
     def positions(self,format_):
         current=self.filters['position'].currentText();self.filters['position'].clear();self.filters['position'].addItems(['Todos','SB','BB']+(['BTN'] if format_=='3H' else []))
@@ -185,6 +206,7 @@ class SequencePanel(QWidget):
         self.hands.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         largest=report['contributions'][0]['opportunities']/report['opportunities'] if report['opportunities'] else 0
         self.notice.setText(f'Mayor contribución individual: {largest:.1%}. '+('Muestra reducida. ' if report['opportunities']<100 else '')+report['note']+' Reg/Fish compara al actor de este nodo conservando las restricciones por rol. Doble clic en acción: avanzar; en mano: replayer. Se muestran hasta 200 manos.')
+        if not report['opportunities']:self.notice.setText('Sin decisiones para esta secuencia y filtros. Revisa stake, fechas, stack y roles. Un grupo Reg/Fish sin etiquetas no aporta muestra; no se estiman frecuencias ni EV.')
     def follow(self,item,column):
         if not self.last or self.pattern!=self.last.get('pattern') or self.current_filters()!=self.last.get('filters'):
             self.notice.setText('Los filtros o la secuencia cambiaron. Pulsa Investigar antes de abrir una rama.');return
