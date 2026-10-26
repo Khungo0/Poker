@@ -22,6 +22,9 @@ def selection(filters):
         elif key in RANGES:
             if len(value)!=2 or not all(math.isfinite(float(v)) for v in value) or value[0]>value[1]: raise ValueError('Invalid range')
             clauses.append(f'o."{key}" BETWEEN ? AND ?'); args.extend(value)
+        elif key in ('actor_group','opponent_group'):
+            player='o.actor' if key=='actor_group' else 'o.opponent'
+            clauses.append(f"EXISTS (SELECT 1 FROM documents d, json_each(d.payload,'$.members') member WHERE d.kind='population' AND d.name=? AND json_extract_string(member.value,'$')={player})");args.append(value)
         elif key in ('actor_profile','opponent_profile'):
             alias='l' if key=='actor_profile' else 'lo'
             clauses.append(f"(SELECT json_extract_string(payload,'$.profile') FROM documents WHERE kind='player_profile' AND name={alias}.player)=?");args.append(value)

@@ -12,3 +12,5 @@
 - Mantener todas las mejoras documentadas en README.md y agregar pruebas.
 
 - Por petición del usuario, continuar por Python y start_windows.bat; no trabajar en EXE, PyInstaller, Inno Setup ni instaladores hasta que cambie esta preferencia. Conservar .venv y compatibilidad de datos al actualizar.
+
+- Prompt maestro vigente: docs/MASTER_REQUEST.md. Priorizar clasificación/poblaciones (nueva Fase 1), después UX con referencia principal 1440×900. No ampliar solvers ni comparación teórica en esta etapa; conservar las funciones antiguas sin expandirlas.
