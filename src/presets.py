@@ -97,5 +97,7 @@ from .postflop import srp_presets
 
 from .advanced_spots import advanced_presets
 
-PRESETS = research_presets() + srp_presets() + advanced_presets()
+from .multiway_extensions import extension_presets
+
+PRESETS = research_presets() + srp_presets() + advanced_presets() + extension_presets()
 PRESETS_BY_KEY = {p.key: p for p in PRESETS}

@@ -38,14 +38,15 @@ def events(hand):
     return out
 
 
-def oracle(hand):
+def oracle(hand,limped=False):
     ev=events(hand);pre=[e for e in ev if e['street']==1];found={}
     def record(key,e):
         if hand.known_cards.get(e['actor'],{}).get('source')!='dealt':
+            if limped:key='lp_'+key.replace('cbet','bet_btn')
             found.setdefault(key,{})[(hand.hand_id,e['seq'])]='raise' if e['kind']=='check_raise' else e['kind']
     post={st:[e for e in ev if e['street']==st] for st in (2,3,4)}
     kinds=lambda es:[e['kind'] for e in es]
-    if hand.format=='3H' and [(e['position'],e['kind']) for e in pre]==[('BTN','raise'),('SB','call'),('BB','call')]:
+    if hand.format=='3H' and [(e['position'],e['kind']) for e in pre]==([('BTN','limp'),('SB','limp'),('BB','check')] if limped else [('BTN','raise'),('SB','call'),('BB','call')]):
         roles={e['actor']:r for e,r in zip(pre,'ABC')};flop=post[2]
         for i,e in enumerate(flop):
             hist=flop[:i];h=kinds(hist);role=roles[e['actor']];rh=''.join(roles[x['actor']] for x in hist)
@@ -71,6 +72,7 @@ def oracle(hand):
                         if e['kind']=='call':calls.append(role)
                         else:bettor=False
                 chain=bettor and tuple(calls)==alive
+    if limped:return found
     for key,fmt,prefix,ip in SRP_LINES:
         if hand.format!=fmt or [(e['position'],e['kind']) for e in pre]!=[(p,k) for r,p,k in prefix]:continue
         roles={e['actor']:r for e,(r,p,k) in zip(pre,prefix)};oop,iprole=('B','A') if ip else ('A','B')

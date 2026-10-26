@@ -1,0 +1,213 @@
+GAME #12543200584 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-09-30 03:30:42/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179622376, 1179622375 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_2 (€420.00 in chips)
+Seat 6: PLAYER_3 (€520.00 in chips)
+Seat 10: PLAYER_1 (€560.00 in chips)  DEALER
+PLAYER_2: Post SB €10.00
+PLAYER_3: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to PLAYER_2 [CJ C7]
+PLAYER_1: Call €20.00
+PLAYER_2: Call €10.00
+PLAYER_3: Check
+*** FLOP *** [H3 D7 C8]
+PLAYER_2: Check
+PLAYER_3: Check
+PLAYER_1: Bet €60.00
+PLAYER_2: Fold
+PLAYER_3: Call €60.00
+*** TURN *** [S9]
+PLAYER_3: Check
+PLAYER_1: Bet €20.00
+PLAYER_3: Call €20.00
+*** RIVER *** [H8]
+PLAYER_3: Check
+PLAYER_1: Bet €220.00
+PLAYER_3: Fold
+*** SUMMARY ***
+Total pot €220.00 Rake €0.00
+PLAYER_1: wins €220.00
+
+GAME #12545240466 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 03:34:17/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1179721877, 1179721876 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_2 (€525.00 in chips)
+Seat 6: PLAYER_1 (€400.00 in chips)  DEALER
+Seat 10: PLAYER_3 (€575.00 in chips)
+PLAYER_3: Post Ante €5.00
+PLAYER_2: Post Ante €5.00
+PLAYER_1: Post Ante €5.00
+PLAYER_3: Post SB €15.00
+PLAYER_2: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to PLAYER_2 [DQ C7]
+PLAYER_1: Call €30.00
+PLAYER_3: Call €15.00
+PLAYER_2: Check
+*** FLOP *** [D6 D9 H3]
+PLAYER_3: Check
+PLAYER_2: Check
+PLAYER_1: Bet €105.00
+PLAYER_3: Fold
+PLAYER_2: Fold
+*** SUMMARY ***
+Total pot €105.00 Rake €0.00
+PLAYER_1: wins €105.00
+
+GAME #12547035393 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-01 23:34:02/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179811306, 1179811305 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_1 (€460.00 in chips)  DEALER
+Seat 6: PLAYER_2 (€580.00 in chips)
+Seat 10: PLAYER_3 (€460.00 in chips)
+PLAYER_2: Post SB €10.00
+PLAYER_3: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to PLAYER_2 [D8 SK]
+PLAYER_1: Call €20.00
+PLAYER_2: Call €10.00
+PLAYER_3: Check
+*** FLOP *** [S4 C6 H7]
+PLAYER_2: Check
+PLAYER_3: Check
+PLAYER_1: Bet €20.00
+PLAYER_2: Call €20.00
+PLAYER_3: Call €20.00
+*** TURN *** [C4]
+PLAYER_2: Check
+PLAYER_3: Check
+PLAYER_1: Check
+*** RIVER *** [D2]
+PLAYER_2: Check
+PLAYER_3: Check
+PLAYER_1: Bet €20.00
+PLAYER_2: Fold
+PLAYER_3: Call €20.00
+*** SUMMARY ***
+Total pot €160.00 Rake €0.00
+PLAYER_1: Shows [HJ H8] One Pair, Fours
+PLAYER_3: Shows [S6 C10] Two Pair, Sixes and Fours
+PLAYER_3: wins €160.00
+
+GAME #12547538413 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-02 05:14:38/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1179839410, 1179839409 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_3 (€490.00 in chips)
+Seat 6: PLAYER_1 (€550.00 in chips)  DEALER
+Seat 10: PLAYER_2 (€460.00 in chips)
+PLAYER_2: Post SB €10.00
+PLAYER_3: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to PLAYER_2 [HJ DK]
+PLAYER_1: Raise (NF) €40.00
+PLAYER_2: Call €30.00
+PLAYER_3: Call €20.00
+*** FLOP *** [HK H10 D8]
+PLAYER_2: Check
+PLAYER_3: Check
+PLAYER_1: Bet €60.00
+PLAYER_2: Raise (NF) €150.00
+PLAYER_3: Fold
+PLAYER_1: Raise (NF) €510.00
+PLAYER_2: Allin €270.00
+*** TURN *** [C10]
+*** RIVER *** [D6]
+*** SUMMARY ***
+Total pot €960.00 Rake €0.00
+PLAYER_1: Shows [SK CQ] Two Pair, Kings and Tens
+PLAYER_2: Mucks [HJ DK] Two Pair, Kings and Tens
+PLAYER_1: wins €960.00
+
+GAME #12563443755 Version:26.7.1.14 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-09 04:07:18/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1180641613, 1180641612 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_2 (€370.00 in chips)  DEALER
+Seat 6: PLAYER_3 (€590.00 in chips)
+Seat 10: PLAYER_1 (€540.00 in chips)
+PLAYER_3: Post SB €10.00
+PLAYER_1: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to PLAYER_1 [HQ H3]
+PLAYER_2: Raise (NF) €40.00
+PLAYER_3: Call €30.00
+PLAYER_1: Call €20.00
+*** FLOP *** [D3 SQ D7]
+PLAYER_3: Check
+PLAYER_1: Check
+PLAYER_2: Bet €60.00
+PLAYER_3: Call €60.00
+PLAYER_1: Raise (NF) €150.00
+PLAYER_2: Fold
+PLAYER_3: Call €90.00
+*** TURN *** [HJ]
+PLAYER_3: Check
+PLAYER_1: Check
+*** RIVER *** [C10]
+PLAYER_3: Check
+PLAYER_1: Bet €160.00
+PLAYER_3: Raise (NF) €400.00
+PLAYER_1: Allin €190.00
+*** SUMMARY ***
+Total pot €1,180.00 Rake €0.00
+PLAYER_3: Shows [D5 S7] One Pair, Sevens
+PLAYER_1: Shows [HQ H3] Two Pair, Queens and Threes
+PLAYER_1: wins €1,180.00
+
+GAME #12574412498 Version:26.7.1.23 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-13 23:05:55/GMT
+Table Info: Size: 3, Blinds: 10/20
+Table Twister €5 SNG, 1181189138, 1181189137 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_1 (€480.00 in chips)  DEALER
+Seat 6: PLAYER_3 (€520.00 in chips)
+Seat 10: PLAYER_2 (€500.00 in chips)
+PLAYER_3: Post SB €10.00
+PLAYER_2: Post BB €20.00
+*** HOLE CARDS ***
+Dealt to PLAYER_2 [DK D4]
+PLAYER_1: Raise (NF) €60.00
+PLAYER_3: Call €50.00
+PLAYER_2: Call €40.00
+*** FLOP *** [D8 H7 DA]
+PLAYER_3: Check
+PLAYER_2: Check
+PLAYER_1: Bet €180.00
+PLAYER_3: Raise (NF) €460.00
+PLAYER_2: Allin €440.00
+PLAYER_1: Allin €240.00
+*** TURN *** [HK]
+*** RIVER *** [C9]
+*** SUMMARY ***
+Total pot €1,480.00 Rake €0.00
+PLAYER_1: Shows [CK H8] Two Pair, Kings and Eights
+PLAYER_3: Shows [C8 SA] Two Pair, Aces and Eights
+PLAYER_2: Mucks [DK D4] One Pair, Kings
+PLAYER_3: wins €1,480.00
+
+GAME #12590482432 Version:26.7.1.23 Uncalled:Y Texas Hold'em NL  Tournament 2026-10-21 02:19:58/GMT
+Table Info: Size: 3, Blinds: 15/30, Ante: 5
+Table Twister €5 SNG, 1181997466, 1181997465 (Tournament: Twister €5 SNG Buy-In: €4.65 + €0.35)
+Seat 3: PLAYER_2 (€573.00 in chips)
+Seat 6: PLAYER_1 (€362.00 in chips)
+Seat 10: PLAYER_3 (€565.00 in chips)  DEALER
+PLAYER_2: Post Ante €5.00
+PLAYER_1: Post Ante €5.00
+PLAYER_3: Post Ante €5.00
+PLAYER_2: Post SB €15.00
+PLAYER_1: Post BB €30.00
+*** HOLE CARDS ***
+Dealt to PLAYER_1 [H9 HK]
+PLAYER_3: Raise (NF) €60.00
+PLAYER_2: Call €45.00
+PLAYER_1: Call €30.00
+*** FLOP *** [HA C8 H4]
+PLAYER_2: Check
+PLAYER_1: Check
+PLAYER_3: Bet €60.00
+PLAYER_2: Raise (NF) €120.00
+PLAYER_1: Raise (NF) €297.00
+PLAYER_3: Fold
+PLAYER_2: Fold
+*** SUMMARY ***
+Total pot €495.00 Rake €0.00
+PLAYER_1: Mucks [H9 HK]
+PLAYER_1: wins €495.00
